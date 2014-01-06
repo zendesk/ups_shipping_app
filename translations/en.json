@@ -1,0 +1,29 @@
+{
+  "app": {
+    "description":  "Play the famous zen tunes in your help desk.",
+    "name":         "Buddha Machine"
+  },
+  "contact": {
+    "username": "Username",
+    "name": "Name",
+    "dob": "Date of Birth",
+    "email": "Email",
+    "btm_number": "BTM Number",
+    "coach_code": "Coach Code",
+    "gender": "Gender",
+    "home_phone": "Home Phone",
+    "mobile_phone": "Mobile Phone",
+    "work_phone": "Work Phone",
+    "address": "Address",
+    "play_county_name": "Play County Name",
+    "rating": "Rating",
+    "status": "Status",
+    "tennis_county_name": "Tennis County Name"
+  },
+  "organization": {
+    "end_date": "End Date",
+    "start_date": "Start Date",
+    "membership_number": "Membership Number"
+  },
+  "no_data": "No data for this user."
+}
