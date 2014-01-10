@@ -1,29 +1,26 @@
 {
   "app": {
-    "description":  "Play the famous zen tunes in your help desk.",
-    "name":         "Buddha Machine"
-  },
-  "contact": {
-    "username": "Username",
-    "name": "Name",
-    "dob": "Date of Birth",
-    "email": "Email",
-    "btm_number": "BTM Number",
-    "coach_code": "Coach Code",
-    "gender": "Gender",
-    "home_phone": "Home Phone",
-    "mobile_phone": "Mobile Phone",
-    "work_phone": "Work Phone",
-    "address": "Address",
-    "play_county_name": "Play County Name",
-    "rating": "Rating",
-    "status": "Status",
-    "tennis_county_name": "Tennis County Name"
-  },
-  "organization": {
-    "end_date": "End Date",
-    "start_date": "Start Date",
-    "membership_number": "Membership Number"
-  },
-  "no_data": "No data for this user."
+    "description":  "Create shipping labels straight from your ticket sidebar.",
+    "name":         "UPS Label App",
+    "parameters": {
+      "company_name" : { "label": "Your Company Name" },
+      "business_address"     : { "label": "Business Address", "helpText": "The street address to be used as your shipping address" },
+      "city"    : { "label": "City" },
+      "state"    : { "label": "State", "helpText": "Two-letter state or province code (e.g. 'CA')" },
+      "country_code"    : { "label": "Country", "helpText": "Two-letter country code (e.g. 'US')" },
+      "zip_code"    : { "label": "Zip Code", "helpText": "Zip or postal code" },
+      "support_email"    : { "label": "Support Email", "helpText": "An email address where your support can be reached by the customer" },
+      "user_address_field"    : { "label": "User Address Field", "helpText": "The name of your 'User Field' in Zendesk where the customer's address is stored. (e.g. 'address')" },
+      "user_city_field"    : { "label": "User City Field", "helpText": "The name of your 'User Field' in Zendesk where the customer's city is stored." },
+      "user_state_field"    : { "label": "User State Field", "helpText": "The name of your 'User Field' in Zendesk where the customer's state is stored." },
+      "user_zip_field"    : { "label": "User Zip or Postal Code Field", "helpText": "The name of your 'User Field' in Zendesk where the customer's zip or postal code is stored." },
+      "user_country_field"    : { "label": "User Country Code Field", "helpText": "The name of your 'User Field' in Zendesk where the customer's 2-letter country code is stored." },
+      "small_size_width"    : { "helpText": "Define the dimensions for the sizes given to your agents in a dropdown field." },
+
+      "ups_username"    : { "label": "UPS Username", "helpText": "Username for your UPS.com account" },
+      "ups_password"    : { "label": "UPS Password", "helpText": "Password for your UPS.com account" },
+      "ups_access_number"    : { "label": "UPS Access License Number", "helpText": "The access number for your UPS.com developer account" }
+    }
+
+  }
 }

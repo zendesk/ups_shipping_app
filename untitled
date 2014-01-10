@@ -1,0 +1,29 @@
+              <v11:Name>{{params.name}}</v11:Name>
+              <v11:Address>
+                 <v11:AddressLine>{{params.address}}</v11:AddressLine>
+                 <v11:City>{{params.city}}</v11:City>
+                 <v11:StateProvinceCode>{{params.state}}</v11:StateProvinceCode>
+                 <v11:PostalCode>{{params.zip}}</v11:PostalCode>
+                 <v11:CountryCode>{{params.country}}</v11:CountryCode>
+              </v11:Address>
+
+              shipper
+
+              <v11:Address>
+                 <v11:AddressLine>{{setting "business_address"}}</v11:AddressLine>
+                 <v11:City>{{setting "city"}}</v11:City>
+                 <v11:StateProvinceCode>{{setting "state"}}</v11:StateProvinceCode>
+                 <v11:PostalCode>{{setting "zip_code"}}</v11:PostalCode>
+                 <v11:CountryCode>US</v11:CountryCode>
+              </v11:Address>
+                    "small_size_height"    : { "label": " ", "helpText": "Use SSL for a secure connection." },
+      "small_size_weight"    : { "label": " ", "helpText": "Use SSL for a secure connection." },
+      "small_size_length"    : { "label": " ", "helpText": "Use SSL for a secure connection." },
+      "medium_size_width"    : { "label": " ", "helpText": "Use SSL for a secure connection." },
+      "medium_size_height"    : { "label": " ", "helpText": "Use SSL for a secure connection." },
+      "medium_size_length"    : { "label": " ", "helpText": "Use SSL for a secure connection." },
+      "medium_size_weight"    : { "label": " ", "helpText": "Use SSL for a secure connection." },
+      "large_size_width"    : { "label": " ", "helpText": "Use SSL for a secure connection." },
+      "large_size_height"    : { "label": " ", "helpText": "Use SSL for a secure connection." },
+      "large_size_length"    : { "label": " ", "helpText": "Use SSL for a secure connection." },
+      "large_size_weight"    : { "label": " ", "helpText": "Use SSL for a secure connection." },

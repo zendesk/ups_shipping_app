@@ -2,11 +2,11 @@
   <soapenv:Header>
      <v1:UPSSecurity>
         <v1:UsernameToken>
-           <v1:Username></v1:Username>
-           <v1:Password></v1:Password>
+           <v1:Username>zenservices</v1:Username>
+           <v1:Password>989Market</v1:Password>
         </v1:UsernameToken>
         <v1:ServiceAccessToken>
-           <v1:AccessLicenseNumber></v1:AccessLicenseNumber>
+           <v1:AccessLicenseNumber>CCC4C7A8477DFC06</v1:AccessLicenseNumber>
         </v1:ServiceAccessToken>
      </v1:UPSSecurity>
   </soapenv:Header>
@@ -17,34 +17,34 @@
         </v12:Request>
         <v11:Shipment>
            <v11:Shipper>
-              <v11:Name>{{setting "company_name"}}</v11:Name>
+              <v11:Name>{{params.name}}</v11:Name>
               <v11:ShipperNumber>F72607</v11:ShipperNumber>
               <v11:Address>
                  <v11:AddressLine>{{setting "business_address"}}</v11:AddressLine>
                  <v11:City>{{setting "city"}}</v11:City>
                  <v11:StateProvinceCode>{{setting "state"}}</v11:StateProvinceCode>
                  <v11:PostalCode>{{setting "zip_code"}}</v11:PostalCode>
-                 <v11:CountryCode>US</v11:CountryCode>
+                 <v11:CountryCode>{{setting "country_code"}}</v11:CountryCode>
               </v11:Address>
            </v11:Shipper>
            <v11:ShipTo>
-              <v11:Name>HelloTest1</v11:Name>
+              <v11:Name>{{params.shipto_name}}</v11:Name>
               <v11:Address>
-                 <v11:AddressLine>1 American Greetings</v11:AddressLine>
-                 <v11:City>Brooklyn</v11:City>
-                 <v11:StateProvinceCode>OH</v11:StateProvinceCode>
-                 <v11:PostalCode>44144</v11:PostalCode>
-                 <v11:CountryCode>US</v11:CountryCode>
+                 <v11:AddressLine>{{params.shipto_address}}</v11:AddressLine>
+                 <v11:City>{{params.shipto_city}}</v11:City>
+                 <v11:StateProvinceCode>{{params.shipto_state}}</v11:StateProvinceCode>
+                 <v11:PostalCode>{{params.shipto_zip_code}}</v11:PostalCode>
+                 <v11:CountryCode>{{params.shipto_country}}</v11:CountryCode>
               </v11:Address>
            </v11:ShipTo>
            <v11:ShipFrom>
-              <v11:Name>{{setting "company_name"}}</v11:Name>
+              <v11:Name>{{params.name}}</v11:Name>
               <v11:Address>
-                 <v11:AddressLine>{{setting "business_address"}}</v11:AddressLine>
-                 <v11:City>{{setting "city"}}</v11:City>
-                 <v11:StateProvinceCode>{{setting "state"}}</v11:StateProvinceCode>
-                 <v11:PostalCode>{{setting "zip_code"}}</v11:PostalCode>
-                 <v11:CountryCode>US</v11:CountryCode>
+                 <v11:AddressLine>{{params.address}}</v11:AddressLine>
+                 <v11:City>{{params.city}}</v11:City>
+                 <v11:StateProvinceCode>{{params.state}}</v11:StateProvinceCode>
+                 <v11:PostalCode>{{params.zip}}</v11:PostalCode>
+                 <v11:CountryCode>{{params.country}}</v11:CountryCode>
               </v11:Address>
            </v11:ShipFrom>
            <v11:PaymentInformation>
@@ -57,7 +57,7 @@
            </v11:PaymentInformation>
            <v11:Service>
 <v11:Code>03</v11:Code> 
-<v11:Description /> 
+<v11:c /> 
 </v11:Service>
            <v11:Package>
               <v11:Description>meow meow</v11:Description>
@@ -69,15 +69,15 @@
                  <v11:UnitOfMeasurement>
                     <v11:Code>LBS</v11:Code>
                  </v11:UnitOfMeasurement>
-                 <v11:Weight>15</v11:Weight>
+                 <v11:Weight>{{params.size.weight}}</v11:Weight>
               </v11:PackageWeight>
               <v11:Dimensions>
                 <v11:UnitOfMeasurement>
                   <v11:Code>IN</v11:Code>
                 </v11:UnitOfMeasurement>
-                <v11:Length>7</v11:Length>
-                <v11:Width>4</v11:Width>
-                <v11:Height>3</v11:Height>              
+                <v11:Length>{{params.size.length}}</v11:Length>
+                <v11:Width>{{params.size.width}}</v11:Width>
+                <v11:Height>{{params.size.height}}</v11:Height>              
             </v11:Dimensions>
               <v11:Commodity>
                  <v11:FreightClass>50</v11:FreightClass>
@@ -101,7 +101,7 @@
          <LabelLinksIndicator/>
 
          <EMail>
-           <EMailAddress>emailaddress@email.com</EMailAddress>
+           <EMailAddress>{{params.email}}</EMailAddress>
            <FromEMailAddress>{{setting "support_email"}}</FromEMailAddress>
            <FromName>{{setting "company_name"}} Customer Service</FromName>
            <Memo/>

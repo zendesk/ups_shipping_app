@@ -32,6 +32,11 @@
       "default": "CA"
     },
     {
+      "name": "country_code",
+      "type": "text",
+      "default": "US"
+    },    
+    {
       "name": "zip_code",
       "type": "number",
       "default": "94103"
@@ -40,6 +45,106 @@
       "name": "support_email",
       "type": "text",
       "default": "support@example.com"
+    },
+    {
+      "name": "user_address_field",
+      "type": "text",
+      "default": "address"
+    },
+    {
+      "name": "user_city_field",
+      "type": "text",
+      "default": "city"
+    },
+    {
+      "name": "user_state_field",
+      "type": "text",
+      "default": "state"
+    },
+    {
+      "name": "user_zip_field",
+      "type": "text",
+      "default": "Zip Code"
+    },
+    {
+      "name": "user_country_field",
+      "type": "text",
+      "default": "country"
+    },
+    {
+      "name": "small_size_width",
+      "type": "text",
+      "default": "3"
+    },
+    {
+      "name": "small_size_height",
+      "type": "text",
+      "default": "5"
+    },
+    {
+      "name": "small_size_length",
+      "type": "text",
+      "default": "5"
+    },
+    {
+      "name": "small_size_weight",
+      "type": "text",
+      "default": "5"
+    },
+    {
+      "name": "medium_size_width",
+      "type": "text",
+      "default": "5"
+    },
+    {
+      "name": "medium_size_height",
+      "type": "text",
+      "default": "7"
+    },
+    {
+      "name": "medium_size_length",
+      "type": "text",
+      "default": "7"
+    },
+    {
+      "name": "medium_size_weight",
+      "type": "text",
+      "default": "10"
+    },
+    {
+      "name": "large_size_width",
+      "type": "text",
+      "default": "8"
+    },
+    {
+      "name": "large_size_height",
+      "type": "text",
+      "default": "10"
+    },
+    {
+      "name": "large_size_length",
+      "type": "text",
+      "default": "10"
+    },
+    {
+      "name": "large_size_weight",
+      "type": "text",
+      "default": "15"
+    },
+    {
+      "name": "ups_username",
+      "type": "text",
+      "default": "15"
+    },
+    {
+      "name": "ups_password",
+      "type": "text",
+      "default": "15"
+    },
+    {
+      "name": "ups_access_number",
+      "type": "text",
+      "default": "15"
     }
   ]
 }
