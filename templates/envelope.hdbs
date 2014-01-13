@@ -3,7 +3,7 @@
      <v1:UPSSecurity>
         <v1:UsernameToken>
            <v1:Username>zenservices</v1:Username>
-           <v1:Password>989Market</v1:Password>
+           <v1:Password>{{setting "ups_password"}}</v1:Password>
         </v1:UsernameToken>
         <v1:ServiceAccessToken>
            <v1:AccessLicenseNumber>CCC4C7A8477DFC06</v1:AccessLicenseNumber>

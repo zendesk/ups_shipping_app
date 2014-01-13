@@ -92,12 +92,12 @@
       this.setUpShipToForm();
     },
     setUpShipToForm: function() {
-      this.$('input[name=shipto_name').val(this.setting("company_name"));
-      this.$('input[name=shipto_address').val(this.setting("business_address"));
-      this.$('input[name=shipto_city').val(this.setting("city"));
-      this.$('input[name=shipto_state').val(this.setting("state"));
-      this.$('input[name=shipto_zip_code').val(this.setting("zip_code"));
-      this.$('input[name=shipto_country').val(this.setting("country_code"));
+      this.$('input[name=shipto_name]').val(this.setting("company_name"));
+      this.$('input[name=shipto_address]').val(this.setting("business_address"));
+      this.$('input[name=shipto_city]').val(this.setting("city"));
+      this.$('input[name=shipto_state]').val(this.setting("state"));
+      this.$('input[name=shipto_zip_code]').val(this.setting("zip_code"));
+      this.$('input[name=shipto_country]').val(this.setting("country_code"));
     },
     onRequestShippingDone: function(data) {
       console.log("-------------->", data);
@@ -121,11 +121,11 @@
       this.$('input[name=name]').val(user.name);
       this.$('input[name=email]').val(user.email);
       if (user.user_fields) {
-        this.$('input[name=address').val(user.user_fields[this.setting('user_address_field').toLowerCase().replace(' ', '_')]);
-        this.$('input[name=city').val(user.user_fields[this.setting('user_city_field').toLowerCase().replace(' ', '_')]);
-        this.$('input[name=state').val(user.user_fields[this.setting('user_state_field').toLowerCase().replace(' ', '_')]);
-        this.$('input[name=country').val(user.user_fields[this.setting('user_country_field').toLowerCase().replace(' ', '_')]);
-        this.$('input[name=zip_code').val(user.user_fields[this.setting('user_zip_field').toLowerCase().replace(' ', '_')]);
+        this.$('input[name=address]').val(user.user_fields[this.setting('user_address_field').toLowerCase().replace(' ', '_')]);
+        this.$('input[name=city]').val(user.user_fields[this.setting('user_city_field').toLowerCase().replace(' ', '_')]);
+        this.$('input[name=state]').val(user.user_fields[this.setting('user_state_field').toLowerCase().replace(' ', '_')]);
+        this.$('input[name=country]').val(user.user_fields[this.setting('user_country_field').toLowerCase().replace(' ', '_')]);
+        this.$('input[name=zip_code]').val(user.user_fields[this.setting('user_zip_field').toLowerCase().replace(' ', '_')]);
       }
     },
     onSizeChanged: function(event) {
@@ -151,9 +151,9 @@
 
       var params = {};
           params.name = this.$('input[name=name]').val();
-          params.address = this.$('input[name=address').val();
-          params.city = this.$('input[name=city').val();
-          params.country = this.$('input[name=country').val();
+          params.address = this.$('input[name=address]').val();
+          params.city = this.$('input[name=city]').val();
+          params.country = this.$('input[name=country]').val();
           params.state = this.$('input[name=state]').val();
           params.zip = this.$('input[name=zip_code]').val();
           params.email = this.$('input[name=email]').val();
@@ -165,7 +165,8 @@
           params.shipto_zip_code = this.$('input[name=shipto_zip_code]').val();
 
       params.size = this.sizes[this.$('select#package_size').val()];
-      //console.log("params", params);
+      // console.log("address field ", this.$('input[name=address'));
+      // console.log("params", params);
       for (var key in params) {
         if (!params[key]) {
           services.notify('Please fill in the field for "' + key + '" before continuing.');
