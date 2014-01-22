@@ -150,6 +150,11 @@
       "name": "ups_access_number",
       "type": "text",
       "default": "15"
+    },
+    {
+      "name": "tracking_field",
+      "type": "number",
+      "default": 21947252
     }
   ]
 }

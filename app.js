@@ -114,8 +114,12 @@
         services.notify("Shipping error: "+ error + ". Please check your information and try again", "error");
       } else {
           var imageData = xmlResponse.getElementsByTagName('GraphicImage')[0].childNodes[0].nodeValue,
-          comment = "![label_image](data:image;base64," + imageData.replace(' ', '') + ")";
+          comment = "![label_image](data:image;base64," + imageData.replace(' ', '') + ")",
+          tracking_number = xmlResponse.getElementsByTagName('TrackingNumber')[0].childNodes[0].nodeValue;
           //this.comment().text(comment);
+          if ( this.setting('tracking_field') ) {
+            this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number );
+          };
           this.ajax('updateTicketComment', comment);
           services.notify('Label has been sent to customer and attached to this ticket. Refresh to see updates to this ticket.');
           this.switchTo('button');
