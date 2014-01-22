@@ -19,7 +19,8 @@
 
       "ups_username"    : { "label": "UPS Username", "helpText": "Username for your UPS.com account" },
       "ups_password"    : { "label": "UPS Password", "helpText": "Password for your UPS.com account" },
-      "ups_access_number"    : { "label": "UPS Access License Number", "helpText": "The access number for your UPS.com developer account" }
+      "ups_access_number"    : { "label": "UPS Access License Number", "helpText": "The access number for your UPS.com developer account" },
+      "editable_form"       : { "label": "Make shipto address editable to agents?" }
     }
 
   }

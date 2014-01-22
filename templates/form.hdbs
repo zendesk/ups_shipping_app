@@ -8,6 +8,7 @@
   <input type="text" placeholder="Zip Code" name="zip_code" class="input-small"/>
   <input type="text" placeholder="Email" name="email" class="input-small"/>
   <br/><br/>
+  {{#if hide}}
   <h4> Ship To: </h4>
   <input type="text" placeholder="Name" name="shipto_name" class="input-small"/>
   <input type="text" placeholder="Address" name="shipto_address" class="input-small"/>
@@ -16,6 +17,7 @@
   <input type="text" placeholder="Country" name="shipto_country" class="input-small" maxlength="2"/>
   <input type="text" placeholder="Zip Code" name="shipto_zip_code" class="input-small"/>
   <br/><br/>
+  {{/if}}
   <h4>Package Information: </h4>
   <label>Size</label>
   <select id="package_size">
@@ -31,6 +33,13 @@
     <input type="text" placeholder="Length" name="length" class="input-small"/>
   </div>
   <br/>
+  <label>Shipping Type</label>
+  <select id="ship_type">
+    <option value="01">Ground</option>
+    <option value="1DA">One-Day Air</option>
+    <option value="2DA">Two-Day Air</option>
+  </select>
+  <br/><br/>
   
   <button type="submit" class="btn create">Generate Shipping Label</button>
 </form>

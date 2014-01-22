@@ -47,6 +47,11 @@
       "default": "support@example.com"
     },
     {
+      "name": "editable_form",
+      "type": "checkbox",
+      "default": "no"
+    },
+    {
       "name": "user_address_field",
       "type": "text",
       "default": "address"

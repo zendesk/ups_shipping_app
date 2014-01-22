@@ -26,6 +26,7 @@
     requesterState: null,
     requesterZip: null,
     requesterCountry: null,
+    editableForm: null,
     requests: {
       fetchUserFromZendesk: function () {
         return {
@@ -53,16 +54,21 @@
     events: {
       'app.activated':'onAppActivated',
       'change #package_size': 'onSizeChanged',
-      'click button.initialize': 'showForm',
+      // 'click button.initialize': 'showForm',
       'click button.create': 'onFormSubmitted',
       'fetchUserFromZendesk.done': 'onUserFetched',
       'requestShipping.done': 'onRequestShippingDone'
     },
 
     onAppActivated: function(app) {
-      this.switchTo('button');
+      // this.switchTo('button');
+      if (this.setting('editable_form') == "yes") {
+        this.editableForm = true;
+      }
+      
       this.requesterId = this.ticket().requester().id();
       this.setUpSizes();
+      this.showForm();
     },
     setUpSizes: function(){
       this.sizes = {
@@ -87,7 +93,7 @@
       };
     },
     showForm: function() {
-      this.switchTo('form');
+      this.switchTo('form', {"hide": this.editableForm});
       this.ajax('fetchUserFromZendesk');
       this.setUpShipToForm();
     },
@@ -157,14 +163,16 @@
           params.state = this.$('input[name=state]').val();
           params.zip = this.$('input[name=zip_code]').val();
           params.email = this.$('input[name=email]').val();
-          params.shipto_name = this.$('input[name=shipto_name]').val();
-          params.shipto_address = this.$('input[name=shipto_address]').val();
-          params.shipto_city = this.$('input[name=shipto_city]').val();
-          params.shipto_state = this.$('input[name=shipto_state]').val();
-          params.shipto_country = this.$('input[name=shipto_country]').val();
-          params.shipto_zip_code = this.$('input[name=shipto_zip_code]').val();
+          params.shipto_name = this.$('input[name=shipto_name]').val() || this.setting('company_name');
+          params.shipto_address = this.$('input[name=shipto_address]').val() || this.setting('business_address');
+          params.shipto_city = this.$('input[name=shipto_city]').val() || this.setting('city');
+          params.shipto_state = this.$('input[name=shipto_state]').val() || this.setting('state');
+          params.shipto_country = this.$('input[name=shipto_country]').val() || this.setting('country_code');
+          params.shipto_zip_code = this.$('input[name=shipto_zip_code]').val() || this.setting('zip_code');
+          params.ship_type = this.$('#ship_type').val();
 
       params.size = this.sizes[this.$('select#package_size').val()];
+      console.log('params', params);
       // console.log("address field ", this.$('input[name=address'));
       // console.log("params", params);
       for (var key in params) {

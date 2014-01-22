@@ -6,7 +6,7 @@
            <v1:Password>{{setting "ups_password"}}</v1:Password>
         </v1:UsernameToken>
         <v1:ServiceAccessToken>
-           <v1:AccessLicenseNumber>CCC4C7A8477DFC06</v1:AccessLicenseNumber>
+           <v1:AccessLicenseNumber>{{setting "ups_access_number"}}</v1:AccessLicenseNumber>
         </v1:ServiceAccessToken>
      </v1:UPSSecurity>
   </soapenv:Header>
@@ -49,7 +49,7 @@
            </v11:ShipFrom>
            <v11:PaymentInformation>
               <v11:ShipmentCharge>
-                 <v11:Type>01</v11:Type>
+                 <v11:Type>{{params.ship_type}}</v11:Type>
                  <v11:BillShipper>
                     <v11:AccountNumber>F72607</v11:AccountNumber>
                  </v11:BillShipper>                 
