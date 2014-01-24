@@ -27,6 +27,7 @@
     requesterZip: null,
     requesterCountry: null,
     editableForm: null,
+    userObj: null,
     requests: {
       fetchUserFromZendesk: function () {
         return {
@@ -49,11 +50,20 @@
           contentType: 'application/json',
           data: '{"ticket": {"comment": {"public":false, "body": "'+comment+'"}}}'
         };
-      }
+      },
+      updateUser: function (params) {
+        return {
+          url: helpers.fmt('/api/v2/users/%@.json', this.ticket().requester().id()),
+          type: 'PUT',
+          contentType: 'application/json',
+          data: '{ "user": { ' + params + ' }}'
+        };
+    }
     },
     events: {
       'app.activated':'onAppActivated',
       'change #package_size': 'onSizeChanged',
+      // 'change .user-info': function(){ this.userUpdated = true; },
       // 'click button.initialize': 'showForm',
       'click button.create': 'onFormSubmitted',
       'fetchUserFromZendesk.done': 'onUserFetched',
@@ -62,7 +72,7 @@
 
     onAppActivated: function(app) {
       // this.switchTo('button');
-      if (this.setting('editable_form') == "yes") {
+      if (this.setting('editable_form') === true) {
         this.editableForm = true;
       }
       
@@ -93,6 +103,7 @@
       };
     },
     showForm: function() {
+      console.log("show?", this.editableForm, this.setting('editable_form'));
       this.switchTo('form', {"hide": this.editableForm});
       this.ajax('fetchUserFromZendesk');
       this.setUpShipToForm();
@@ -104,6 +115,9 @@
       this.$('input[name=shipto_state]').val(this.setting("state"));
       this.$('input[name=shipto_zip_code]').val(this.setting("zip_code"));
       this.$('input[name=shipto_country]').val(this.setting("country_code"));
+    },
+    showUpdateUserOption: function() {
+      this.$('#uu_modal').modal(options);
     },
     onRequestShippingDone: function(data) {
       console.log("-------------->", data);
@@ -127,7 +141,8 @@
 
     },
     onUserFetched: function(data) {
-      var user = data.user;
+      this.userObj = data.user;
+      var user = this.userObj;
       this.$('input[name=name]').val(user.name);
       this.$('input[name=email]').val(user.email);
       if (user.user_fields) {
