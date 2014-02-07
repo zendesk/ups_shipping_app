@@ -28,6 +28,8 @@
     requesterCountry: null,
     editableForm: null,
     userObj: null,
+    userNewParams: null,
+    confirmed: true,
     requests: {
       fetchUserFromZendesk: function () {
         return {
@@ -48,30 +50,40 @@
           url: helpers.fmt('/api/v2/tickets/%@.json', this.ticket().id()),
           type: 'PUT',
           contentType: 'application/json',
-          data: '{"ticket": {"comment": {"public":false, "body": "'+comment+'"}}}'
+          data: helpers.fmt('{"ticket": {"comment": {"public":false, "body": "%@" }}}', comment )
         };
       },
-      updateUser: function (params) {
+      updateUser: function () {
         return {
-          url: helpers.fmt('/api/v2/users/%@.json', this.ticket().requester().id()),
+          url: helpers.fmt('/api/v2/users/%@.json', this.requesterId),
           type: 'PUT',
           contentType: 'application/json',
-          data: '{ "user": { ' + params + ' }}'
+          data: helpers.fmt( '{ "user": { "user_fields": %@ }}', JSON.stringify(this.userNewParams) )
         };
+    },
+    updateNameOnly: function (name) {
+      console.log("trying");
+      return {
+        url: helpers.fmt('/api/v2/users/%@.json', this.requesterId),
+        type: 'PUT',
+        contentType: 'application/json',
+        data: helpers.fmt('{ "user": { "name": "%@" }}', name )
+      };
     }
     },
     events: {
       'app.activated':'onAppActivated',
       'change #package_size': 'onSizeChanged',
-      // 'change .user-info': function(){ this.userUpdated = true; },
-      // 'click button.initialize': 'showForm',
+      'change .user-info': 'onUserUpdated',
+      'click button.initialize': 'showForm',
+      'click .update-decline': function(){ this.$('.update-confirm').fadeOut(); this.userNewParams = null; this.onFormSubmitted(); },
+      'click .update-user': function(){ this.ajax('updateUser'); this.$('#update-confirm').fadeOut(); this.userNewParams = null; this.onFormSubmitted(); },
       'click button.create': 'onFormSubmitted',
       'fetchUserFromZendesk.done': 'onUserFetched',
       'requestShipping.done': 'onRequestShippingDone'
     },
 
     onAppActivated: function(app) {
-      // this.switchTo('button');
       if (this.setting('editable_form') === true) {
         this.editableForm = true;
       }
@@ -103,7 +115,7 @@
       };
     },
     showForm: function() {
-      console.log("show?", this.editableForm, this.setting('editable_form'));
+      //console.log("show?", this.editableForm, this.setting('editable_form'));
       this.switchTo('form', {"hide": this.editableForm});
       this.ajax('fetchUserFromZendesk');
       this.setUpShipToForm();
@@ -117,7 +129,7 @@
       this.$('input[name=shipto_country]').val(this.setting("country_code"));
     },
     showUpdateUserOption: function() {
-      this.$('#uu_modal').modal(options);
+      this.$('.update-confirm').fadeIn();
     },
     onRequestShippingDone: function(data) {
       console.log("-------------->", data);
@@ -126,17 +138,22 @@
       if ( xmlResponse.getElementsByTagName('PrimaryErrorCode').length > 0 ) {
         var error = xmlResponse.getElementsByTagName('Description')[0].childNodes[0].nodeValue;
         services.notify("Shipping error: "+ error + ". Please check your information and try again", "error");
-      } else {
+        console.log("error:", error);
+      } else if ( xmlResponse.getElementsByTagName('GraphicImage').length > 0 ){
           var imageData = xmlResponse.getElementsByTagName('GraphicImage')[0].childNodes[0].nodeValue,
           comment = "![label_image](data:image;base64," + imageData.replace(' ', '') + ")",
           tracking_number = xmlResponse.getElementsByTagName('TrackingNumber')[0].childNodes[0].nodeValue;
           //this.comment().text(comment);
           if ( this.setting('tracking_field') ) {
             this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number );
-          };
+          }
           this.ajax('updateTicketComment', comment);
           services.notify('Label has been sent to customer and attached to this ticket. Refresh to see updates to this ticket.');
           this.switchTo('button');
+      } else if ( xmlResponse.getElementsByTagName('TrackingNumber').length > 0 ) {
+      //if ( xmlResponse.getElementsByTagName('Alert').length > 0 ) {
+        var lookup = xmlResponse.getElementsByTagName('TrackingNumber')[0].childNodes[0].nodeValue;
+        services.notify('Your shipment needs additional preparation. TrackingNumber: ',  lookup);
       }
 
     },
@@ -146,11 +163,11 @@
       this.$('input[name=name]').val(user.name);
       this.$('input[name=email]').val(user.email);
       if (user.user_fields) {
-        this.$('input[name=address]').val(user.user_fields[this.setting('user_address_field').toLowerCase().replace(' ', '_')]);
-        this.$('input[name=city]').val(user.user_fields[this.setting('user_city_field').toLowerCase().replace(' ', '_')]);
-        this.$('input[name=state]').val(user.user_fields[this.setting('user_state_field').toLowerCase().replace(' ', '_')]);
-        this.$('input[name=country]').val(user.user_fields[this.setting('user_country_field').toLowerCase().replace(' ', '_')]);
-        this.$('input[name=zip_code]').val(user.user_fields[this.setting('user_zip_field').toLowerCase().replace(' ', '_')]);
+        this.$('input[name=address]').val(user.user_fields[this.fmtd(this.setting('user_address_field'))]);
+        this.$('input[name=city]').val(user.user_fields[this.fmtd(this.setting('user_city_field'))]);
+        this.$('input[name=state]').val(user.user_fields[this.fmtd(this.setting('user_state_field'))]);
+        this.$('input[name=country]').val(user.user_fields[this.fmtd(this.setting('user_country_field'))]);
+        this.$('input[name=zip_code]').val(user.user_fields[this.fmtd(this.setting('user_zip_field'))]);
       }
     },
     onSizeChanged: function(event) {
@@ -173,7 +190,11 @@
 
     onFormSubmitted: function(e) {
       if (e) { e.preventDefault(); }
-
+      if (this.userNewParams) {
+        this.showUpdateUserOption();
+        this.confirmed = false;
+        return false;
+      }
       var params = {};
           params.name = this.$('input[name=name]').val();
           params.address = this.$('input[name=address]').val();
@@ -191,22 +212,51 @@
           params.ship_type = this.$('#ship_type').val();
 
       params.size = this.sizes[this.$('select#package_size').val()];
-      console.log('params', params);
-      // console.log("address field ", this.$('input[name=address'));
-      // console.log("params", params);
+
       for (var key in params) {
         if (!params[key]) {
           services.notify('Please fill in the field for "' + key + '" before continuing.');
           return false;
         }
       }
+      params.intl = params.ship_type === "12";
+      //console.log(params);
 
-      this.ajax('requestShipping',
-                this.renderTemplate('envelope', {
-                  params: params
-                }));
-      // if (!_.isEmpty(email)) { params.EmailAddress = email; }
-      // if (!_.isEmpty(btmNumber)) { params.BTNumber = btmNumber; }
+        this.ajax('requestShipping',
+          this.renderTemplate('envelope', {
+          params: params
+        }));
+
+    },
+    onUserUpdated: function(e) {
+       var self = this,
+          newVal = this.$(e.target).val();
+      if (!this.userNewParams) { this.userNewParams = {}; }
+      switch( this.$(e.target).attr('name')) {
+        case 'name':
+          this.ajax('updateNameOnly', newVal );
+          break;
+        case 'address':
+          self.userNewParams[self.fmtd(self.setting('user_address_field'))] = newVal;
+          break;
+        case 'city':
+          self.userNewParams[self.fmtd(self.setting('user_city_field'))] = newVal;
+          break;
+        case 'state':
+          self.userNewParams[self.fmtd(self.setting('user_state_field'))] = newVal;
+          break;
+        case  'country':
+          self.userNewParams[self.fmtd(self.setting('user_country_field'))] = newVal;
+          break;
+        case 'zip_code':
+          self.userNewParams[self.fmtd(self.setting('user_zip_field'))] = newVal;
+          break;
+      }
+      console.log('user params: ', this.userNewParams);
+    },
+
+    fmtd: function(str) {
+      return str.toLowerCase().replace(' ', '_');
     }
   };
 

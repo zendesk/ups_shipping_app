@@ -1,1 +1,2 @@
-<button type="submit" class="btn initialize">Create Return Shipping Label</button>
+<h3> Label Submitted </h3>
+<button type="submit" class="btn initialize">Create Another Shipping Label</button>

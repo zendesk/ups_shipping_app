@@ -25,3 +25,10 @@ ul {
 .dimensions {
 	display: none;
 }
+.update-confirm {
+	display: none;
+	padding: 10px;
+	background: #f5f5f5;
+	border: 1px solid #f1f1f1;
+	margin-bottom: 12px;
+}

@@ -26,6 +26,12 @@
                  <v11:PostalCode>{{setting "zip_code"}}</v11:PostalCode>
                  <v11:CountryCode>{{setting "country_code"}}</v11:CountryCode>
               </v11:Address>
+              <v11:Phone>
+              <v11:Number>
+              6618396979661
+            </v11:Number>
+            </v11:Phone>
+            <v11:AttentionName>Rose Trujillo</v11:AttentionName>
            </v11:Shipper>
            <v11:ShipTo>
               <v11:Name>{{params.shipto_name}}</v11:Name>
@@ -36,6 +42,10 @@
                  <v11:PostalCode>{{params.shipto_zip_code}}</v11:PostalCode>
                  <v11:CountryCode>{{params.shipto_country}}</v11:CountryCode>
               </v11:Address>
+              <v11:AttentionName>Rose Trujillo</v11:AttentionName>
+              <v11:Phone>
+              <v11:Number>6618396979661</v11:Number>
+              </v11:Phone>
            </v11:ShipTo>
            <v11:ShipFrom>
               <v11:Name>{{params.name}}</v11:Name>
@@ -49,18 +59,30 @@
            </v11:ShipFrom>
            <v11:PaymentInformation>
               <v11:ShipmentCharge>
-                 <v11:Type>{{params.ship_type}}</v11:Type>
+                <v11:Type>01</v11:Type>
+                <v11:BillShipper>
+                    <v11:AccountNumber>F72607</v11:AccountNumber>
+                </v11:BillShipper>                 
+              </v11:ShipmentCharge>
+              <v11:ShipmentCharge>
+                 <v11:Type>02</v11:Type>
                  <v11:BillShipper>
                     <v11:AccountNumber>F72607</v11:AccountNumber>
                  </v11:BillShipper>                 
               </v11:ShipmentCharge>
            </v11:PaymentInformation>
+
+           {{#if params.intl}}
+          <v11:ReturnService>
+            <v11:Code>5</v11:Code>
+          </v11:ReturnService>
+          {{/if}}
            <v11:Service>
-<v11:Code>03</v11:Code> 
-<v11:c /> 
-</v11:Service>
+            <v11:Code>{{params.ship_type}}</v11:Code> 
+            <v11:c />
+          </v11:Service>
            <v11:Package>
-              <v11:Description>meow meow</v11:Description>
+              <v11:Description>meow meeeow</v11:Description>
               <v11:Packaging>
                  <v11:Code>02</v11:Code>
                  <v11:Description>Package</v11:Description>
@@ -84,6 +106,7 @@
               </v11:Commodity>
            </v11:Package>
         </v11:Shipment>
+
         <v11:LabelSpecification>
            <v11:LabelImageFormat>
               <v11:Code>GIF</v11:Code>
@@ -95,19 +118,47 @@
               <v11:Width>4</v11:Width>
            </v11:LabelStockSize>
         </v11:LabelSpecification>
-          <ShipmentServiceOptions>
-        <LabelDelivery>
 
-         <LabelLinksIndicator/>
+        <ShipmentServiceOptions>
+          <LabelDelivery>
 
-         <EMail>
-           <EMailAddress>{{params.email}}</EMailAddress>
-           <FromEMailAddress>{{setting "support_email"}}</FromEMailAddress>
-           <FromName>{{setting "company_name"}} Customer Service</FromName>
-           <Memo/>
-           <Subject>Your return shipping label from {{setting "company_name"}}</Subject>
-         </EMail>
-        </LabelDelivery>
+            <LabeLinksIndicator/>
+            <EMail>
+              <EMailAddress>{{params.email}}</EMailAddress>
+              <UndeliverableEMailAddress>{{setting "support_email"}}</UndeliverableEMailAddress>
+              <FromEMailAddress>{{setting "support_email"}}</FromEMailAddress>
+              <FromName>{{setting "company_name"}} Customer Service</FromName>
+              <Memo/>
+              <Subject>Your return shipping label from {{setting "company_name"}}</Subject>
+            </EMail>
+          </LabelDelivery>
+
+          {{#if params.intl}}
+            <v13:InternationalForms>
+              <v13:FormType>05</v13:FormType>
+                <v13:CN22Form>
+                  <v13:LabelSize>4X6</v13:LabelSize>
+                  <v13:PrintsPerPage>1</v13:PrintsPerPage>
+                  <v13:LabelPrintType>gif</v13:LabelPrintType>
+                  <v13:CN22Type>3</v13:CN22Type>
+                  <v13:CN22Content>
+                    <v13:CN22ContentQuantity>1</v13:CN22ContentQuantity>
+                    <v13:CN22ContentDescription>Return product from Anki drive customer back to manufacturer</v13:CN22ContentDescription>
+                    <v13:CN22ContentWeight>
+                      <v13:UnitOfMeasurement>
+                        <v13:Code>LBS</v13:Code>
+                      </v13:UnitOfMeasurement>
+                      <v13:Weight>{{params.size.weight}}</v13:Weight>
+                    </v13:CN22ContentWeight>
+                    <v13:CN22ContentTotalValue>100</v13:CN22ContentTotalValue>
+                    <v13:CN22ContentCurrencyCode>USD</v13:CN22ContentCurrencyCode>
+                    <v13:CN22ContentCountryOfOrigin>US</v13:CN22ContentCountryOfOrigin>
+                  </v13:CN22Content>
+
+                </v13:CN22Form>
+            </v13:InternationalForms>
+          {{/if}}
+
         </ShipmentServiceOptions>
      </v11:ShipmentRequest>
   </soapenv:Body>
