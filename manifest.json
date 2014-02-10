@@ -14,45 +14,54 @@
     {
       "name": "company_name",
       "type": "text",
-      "default": "Support"
+      "default": "Support",
+      "required": true
     },
     {
       "name": "attention_name",
-      "type": "text"
+      "type": "text",
+      "required": true
     },
     {
       "name": "business_address",
       "type": "text",
-      "default": "989 Market Street"
+      "default": "989 Market Street",
+      "required": true
     },
     {
       "name": "city",
       "type": "text",
-      "default": "San Francisco"
+      "default": "San Francisco",
+      "required": true
     },
     {
       "name": "state",
       "type": "text",
-      "default": "CA"
+      "default": "CA",
+      "required": true
     },
     {
       "name": "country_code",
       "type": "text",
-      "default": "US"
+      "default": "US",
+      "required": true
     },    
     {
       "name": "zip_code",
       "type": "number",
-      "default": "94103"
+      "default": "94103",
+      "required": true
     },
     {
       "name": "support_email",
       "type": "text",
-      "default": "support@example.com"
+      "default": "support@example.com",
+      "required": true
     },
     {
       "name": "phone_number",
-      "type": "number"
+      "type": "number",
+      "required": true
     },
     {
       "name": "editable_form",
@@ -147,26 +156,30 @@
     {
       "name": "ups_username",
       "type": "text",
-      "default": "15"
+      "default": "15",
+      "required": true
     },
     {
       "name": "ups_password",
       "type": "text",
-      "default": "15"
+      "default": "15",
+      "required": true
     },
     {
       "name": "ups_access_number",
       "type": "text",
-      "default": "15"
+      "default": "15",
+      "required": true
     },
     {
       "name": "ups_shipper_number",
-      "type": "text"
+      "type": "text",
+      "required": true
       },
     {
       "name": "tracking_field",
       "type": "number",
-      "default": 21947252
+      "default": "21947252"
     },
     {
       "name": "production_on",
