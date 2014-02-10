@@ -138,39 +138,40 @@
     },
     onRequestShippingDone: function(data) {
       console.log("-------------->", data);
-
       var xmlResponse = data.documentElement;
-      if ( xmlResponse.getElementsByTagName('PrimaryErrorCode').length > 0 ) {
-        var error = xmlResponse.getElementsByTagName('Description')[0].childNodes[0].nodeValue;
-        services.notify("Shipping error: "+ error + ". Please check your information and try again", "error");
-        console.log("error:", error);
-      } else if ( xmlResponse.getElementsByTagName('GraphicImage').length > 0 ){
-          var imageData = xmlResponse.getElementsByTagName('GraphicImage')[0].childNodes[0].nodeValue,
-          tracking_number = xmlResponse.getElementsByTagName('TrackingNumber')[0].childNodes[0].nodeValue;
-          comment = "![label_image](data:image;base64," + imageData.replace(' ', '') + ") Tracking Number: " + tracking_number;
+      if ( xmlResponse.getElementsByTagName('TrackingNumber').length > 0 ) {
+        var tracking_number = xmlResponse.getElementsByTagName('TrackingNumber')[0].childNodes[0].nodeValue;
+        if ( xmlResponse.getElementsByTagName('PrimaryErrorCode').length > 0 ) {
+          var error = xmlResponse.getElementsByTagName('Description')[0].childNodes[0].nodeValue;
+          services.notify("Shipping error: "+ error + ". Please check your information and try again", "error");
+          console.log("error:", error);
+        } else if ( xmlResponse.getElementsByTagName('GraphicImage').length > 0 ){
+            var imageData = xmlResponse.getElementsByTagName('GraphicImage')[0].childNodes[0].nodeValue,
+            comment = "![label_image](data:image;base64," + imageData.replace(' ', '') + ") Tracking Number: " + tracking_number;
+            if ( this.setting('tracking_field') ) {
+              this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number );
+            }
+            //this.ajax('updateTicketComment', comment);
+            services.notify('Label has been sent to customer and attached to this ticket. Refresh to see updates to this ticket.');
+            this.switchTo('button');
+        } else if ( xmlResponse.getElementsByTagName('LabelURL').length > 0) {
+          var labelUrl = xmlResponse.getElementsByTagName('LabelURL')[0].childNodes[0].nodeValue;
+              // receiptUrl = xmlResponse.getElementsByTagName('ReceiptURL')[0].childNodes[0].nodeValue;
           if ( this.setting('tracking_field') ) {
             this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number );
           }
-          //this.ajax('updateTicketComment', comment);
+          this.ajax('updateTicketComment', 'UPS temporary Label URL: ' + labelUrl);
           services.notify('Label has been sent to customer and attached to this ticket. Refresh to see updates to this ticket.');
           this.switchTo('button');
-      } else if ( xmlResponse.getElementsByTagName('LabelURL').length > 0) {
-        var labelUrl = xmlResponse.getElementsByTagName('LabelURL')[0].childNodes[0].nodeValue;
-            // receiptUrl = xmlResponse.getElementsByTagName('ReceiptURL')[0].childNodes[0].nodeValue;
-        if ( this.setting('tracking_field') ) {
-          this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number );
+
+        } else {
+        //if ( xmlResponse.getElementsByTagName('Alert').length > 0 ) {
+          var lookup = xmlResponse.getElementsByTagName('TrackingNumber')[0].childNodes[0].nodeValue;
+          this.ajax('updateTicketComment', 'See carrier for more details - Tracking Number: ' + lookup);
+          services.notify('Your shipment needs additional preparation. TrackingNumber: ', lookup);
         }
-        this.ajax('updateTicketComment', 'UPS temporary Label URL: ' + labelUrl);
-        services.notify('Label has been sent to customer and attached to this ticket. Refresh to see updates to this ticket.');
-        this.switchTo('button');
 
-      } else if ( xmlResponse.getElementsByTagName('TrackingNumber').length > 0 ) {
-      //if ( xmlResponse.getElementsByTagName('Alert').length > 0 ) {
-        var lookup = xmlResponse.getElementsByTagName('TrackingNumber')[0].childNodes[0].nodeValue;
-        this.ajax('updateTicketComment', 'See carrier for more details - Tracking Number: ' + lookup);
-        services.notify('Your shipment needs additional preparation. TrackingNumber: ', lookup);
       }
-
     },
     onUserFetched: function(data) {
       this.userObj = data.user;
