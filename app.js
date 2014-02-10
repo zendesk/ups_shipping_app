@@ -236,6 +236,7 @@
       }
       params.intl = params.ship_type === "12";
       //console.log(params);
+      this.switchTo('loading');
       var url = this.productionOn ? this.productionAPI : this.testingAPI;
       this.ajax('requestShipping',
         this.renderTemplate('envelope', {
