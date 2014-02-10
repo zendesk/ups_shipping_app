@@ -214,7 +214,7 @@
           params.name = this.$('input[name=name]').val();
           params.address = this.$('input[name=address]').val();
           params.city = this.$('input[name=city]').val();
-          params.country = this.$('input[name=country]').val().toUpperCase();
+          params.country = this.$('input[name=country]').val().toUpperCase().substring(0, 2);
           params.state = this.$('input[name=state]').val().toUpperCase();
           params.zip = this.$('input[name=zip_code]').val();
           params.email = this.$('input[name=email]').val();
