@@ -1,3 +1,4 @@
+<div id="result"></div>
 <form class="form search">
   <h4> Ship From: </h4>
   <input type="text" placeholder="Customer Name" name="name" class="input-small user-info"/>
@@ -38,8 +39,8 @@
     <option value="03">Ground</option>
     <option value="01">One-Day Air</option>
     <option value="02">Two-Day Air</option>
-    <option value="11">UPS Standard</option>
-<!--     <option value="12">3-Day Intern'tl</option>
+<!--     <option value="11">UPS Standard</option>
+ --><!--     <option value="12">3-Day Intern'tl</option>
  -->  </select>
   <br/><br/>
 

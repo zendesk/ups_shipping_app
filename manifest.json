@@ -6,7 +6,7 @@
   },
   "defaultLocale": "en",
   "private": true,
-  "location": [ "new_ticket_sidebar", "ticket_sidebar" ],
+  "location": [ "ticket_sidebar" ],
   "version": "1.0",
   "frameworkVersion": "1.0",
 
@@ -15,6 +15,10 @@
       "name": "company_name",
       "type": "text",
       "default": "Support"
+    },
+    {
+      "name": "attention_name",
+      "type": "text"
     },
     {
       "name": "business_address",
@@ -45,6 +49,10 @@
       "name": "support_email",
       "type": "text",
       "default": "support@example.com"
+    },
+    {
+      "name": "phone_number",
+      "type": "number"
     },
     {
       "name": "editable_form",
@@ -152,9 +160,18 @@
       "default": "15"
     },
     {
+      "name": "ups_shipper_number",
+      "type": "text"
+      },
+    {
       "name": "tracking_field",
       "type": "number",
       "default": 21947252
+    },
+    {
+      "name": "production_on",
+      "type": "checkbox",
+      "default": "no"
     }
   ]
 }
