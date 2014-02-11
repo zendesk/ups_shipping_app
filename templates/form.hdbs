@@ -43,14 +43,11 @@
  --><!--     <option value="12">3-Day Intern'tl</option>
  -->  </select>
   <br/><br/>
-
+  <a class="btn create">Generate Shipping Label</a>
+</form>
 <div class="update-confirm">
     <h3>Update User?</h3>
     <p>Would you like to save this new information to the User's profile?</p>
-    <button class="btn update-decline">Nope</button>
-    <button class="btn btn-primary update-user">Yes</button>
+    <a class="btn update-decline">Nope</a>
+    <a class="btn btn-primary update-user">Yes</a>
 </div>
-
-  
-  <button type="submit" class="btn create">Generate Shipping Label</button>
-</form>

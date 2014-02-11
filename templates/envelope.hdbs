@@ -17,7 +17,7 @@
         </v12:Request>
         <v11:Shipment>
            <v11:Shipper>
-              <v11:Name>{{params.name}}</v11:Name>
+              <v11:Name>{{fparams.name}}</v11:Name>
               <v11:ShipperNumber>{{setting "ups_shipper_number"}}</v11:ShipperNumber>
               <v11:Address>
                  <v11:AddressLine>{{setting "business_address"}}</v11:AddressLine>
@@ -34,13 +34,13 @@
             <v11:AttentionName>{{setting "company_name"}}</v11:AttentionName>
            </v11:Shipper>
            <v11:ShipTo>
-              <v11:Name>{{params.shipto_name}}</v11:Name>
+              <v11:Name>{{fparams.shipto_name}}</v11:Name>
               <v11:Address>
-                 <v11:AddressLine>{{params.shipto_address}}</v11:AddressLine>
-                 <v11:City>{{params.shipto_city}}</v11:City>
-                 <v11:StateProvinceCode>{{params.shipto_state}}</v11:StateProvinceCode>
-                 <v11:PostalCode>{{params.shipto_zip_code}}</v11:PostalCode>
-                 <v11:CountryCode>{{params.shipto_country}}</v11:CountryCode>
+                 <v11:AddressLine>{{fparams.shipto_address}}</v11:AddressLine>
+                 <v11:City>{{fparams.shipto_city}}</v11:City>
+                 <v11:StateProvinceCode>{{fparams.shipto_state}}</v11:StateProvinceCode>
+                 <v11:PostalCode>{{fparams.shipto_zip_code}}</v11:PostalCode>
+                 <v11:CountryCode>{{fparams.shipto_country}}</v11:CountryCode>
               </v11:Address>
               <v11:AttentionName>{{setting "attention_name"}}</v11:AttentionName>
               <v11:Phone>
@@ -48,13 +48,13 @@
               </v11:Phone>
            </v11:ShipTo>
            <v11:ShipFrom>
-              <v11:Name>{{params.name}}</v11:Name>
+              <v11:Name>{{fparams.name}}</v11:Name>
               <v11:Address>
-                 <v11:AddressLine>{{params.address}}</v11:AddressLine>
-                 <v11:City>{{params.city}}</v11:City>
-                 <v11:StateProvinceCode>{{params.state}}</v11:StateProvinceCode>
-                 <v11:PostalCode>{{params.zip}}</v11:PostalCode>
-                 <v11:CountryCode>{{params.country}}</v11:CountryCode>
+                 <v11:AddressLine>{{fparams.address}}</v11:AddressLine>
+                 <v11:City>{{fparams.city}}</v11:City>
+                 <v11:StateProvinceCode>{{fparams.state}}</v11:StateProvinceCode>
+                 <v11:PostalCode>{{fparams.zip}}</v11:PostalCode>
+                 <v11:CountryCode>{{fparams.country}}</v11:CountryCode>
               </v11:Address>
            </v11:ShipFrom>
            <v11:PaymentInformation>
@@ -64,7 +64,7 @@
                     <v11:AccountNumber>{{setting "ups_shipper_number"}}</v11:AccountNumber>
                 </v11:BillShipper>                 
               </v11:ShipmentCharge>
-              {{#if params.intl}}
+              {{#if fparams.intl}}
               <v11:ShipmentCharge>
                  <v11:Type>02</v11:Type>
                  <v11:BillShipper>
@@ -79,7 +79,7 @@
           </v11:ReturnService>
 
            <v11:Service>
-            <v11:Code>{{params.ship_type}}</v11:Code> 
+            <v11:Code>{{fparams.ship_type}}</v11:Code> 
             <v11:c />
           </v11:Service>
            <v11:Package>
@@ -92,15 +92,15 @@
                  <v11:UnitOfMeasurement>
                     <v11:Code>LBS</v11:Code>
                  </v11:UnitOfMeasurement>
-                 <v11:Weight>{{params.size.weight}}</v11:Weight>
+                 <v11:Weight>{{fparams.psize.weight}}</v11:Weight>
               </v11:PackageWeight>
               <v11:Dimensions>
                 <v11:UnitOfMeasurement>
                   <v11:Code>IN</v11:Code>
                 </v11:UnitOfMeasurement>
-                <v11:Length>{{params.size.length}}</v11:Length>
-                <v11:Width>{{params.size.width}}</v11:Width>
-                <v11:Height>{{params.size.height}}</v11:Height>              
+                <v11:Length>{{fparams.psize.length}}</v11:Length>
+                <v11:Width>{{fparams.psize.width}}</v11:Width>
+                <v11:Height>{{fparams.psize.height}}</v11:Height>              
             </v11:Dimensions>
               <v11:Commodity>
                  <v11:FreightClass>50</v11:FreightClass>
@@ -124,7 +124,7 @@
 
             <v11:LabelLinksIndicator/>
             <v11:EMail>
-              <v11:EMailAddress>{{params.email}}</v11:EMailAddress>
+              <v11:EMailAddress>{{fparams.email}}</v11:EMailAddress>
               <v11:UndeliverableEMailAddress>{{setting "support_email"}}</v11:UndeliverableEMailAddress>
               <v11:FromEMailAddress>{{setting "support_email"}}</v11:FromEMailAddress>
               <v11:FromName>{{setting "company_name"}} Customer Service</v11:FromName>
@@ -133,7 +133,7 @@
             </v11:EMail>
           </v11:LabelDelivery>
 
-          {{#if params.intl}}
+          {{#if fparams.intl}}
             <v13:InternationalForms>
               <v13:FormType>05</v13:FormType>
                 <v13:CN22Form>
@@ -148,7 +148,7 @@
                       <v13:UnitOfMeasurement>
                         <v13:Code>LBS</v13:Code>
                       </v13:UnitOfMeasurement>
-                      <v13:Weight>{{params.size.weight}}</v13:Weight>
+                      <v13:Weight>{{fparams.psize.weight}}</v13:Weight>
                     </v13:CN22ContentWeight>
                     <v13:CN22ContentTotalValue>100</v13:CN22ContentTotalValue>
                     <v13:CN22ContentCurrencyCode>USD</v13:CN22ContentCurrencyCode>

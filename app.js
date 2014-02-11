@@ -80,7 +80,7 @@
       'click button.initialize': 'showForm',
       'click .update-decline': 'userUpdateDecline',
       'click .update-user': 'userUpdateConfirm',
-      'click button.create': 'onFormSubmitted',
+      'click a.create': 'onFormSubmitted',
       'fetchUserFromZendesk.done': 'onUserFetched',
       'requestShipping.done': 'onRequestShippingDone'
     },
@@ -151,12 +151,11 @@
             if ( this.setting('tracking_field') ) {
               this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number );
             }
-            //this.ajax('updateTicketComment', comment);
+            this.ajax('updateTicketComment', comment);
             services.notify('Label has been sent to customer and attached to this ticket. Refresh to see updates to this ticket.');
             this.switchTo('button');
         } else if ( xmlResponse.getElementsByTagName('LabelURL').length > 0) {
           var labelUrl = xmlResponse.getElementsByTagName('LabelURL')[0].childNodes[0].nodeValue;
-              // receiptUrl = xmlResponse.getElementsByTagName('ReceiptURL')[0].childNodes[0].nodeValue;
           if ( this.setting('tracking_field') ) {
             this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number );
           }
@@ -211,38 +210,38 @@
         this.confirmed = false;
         return false;
       }
-      var params = {};
-          params.name = this.$('input[name=name]').val();
-          params.address = this.$('input[name=address]').val();
-          params.city = this.$('input[name=city]').val();
-          params.country = this.$('input[name=country]').val().toUpperCase().substring(0, 2);
-          params.state = this.$('input[name=state]').val().toUpperCase();
-          params.zip = this.$('input[name=zip_code]').val();
-          params.email = this.$('input[name=email]').val();
-          params.shipto_name = this.$('input[name=shipto_name]').val() || this.setting('company_name');
-          params.shipto_address = this.$('input[name=shipto_address]').val() || this.setting('business_address');
-          params.shipto_city = this.$('input[name=shipto_city]').val() || this.setting('city');
-          params.shipto_state = this.$('input[name=shipto_state]').val() || this.setting('state').toUpperCase();
-          params.shipto_country = this.$('input[name=shipto_country]').val() || this.setting('country_code').toUpperCase();
-          params.shipto_zip_code = this.$('input[name=shipto_zip_code]').val() || this.setting('zip_code');
-          params.ship_type = this.$('#ship_type').val();
+      var ship_params = {};
+          ship_params.name = this.$('input[name=name]').val();
+          ship_params.address = this.$('input[name=address]').val();
+          ship_params.city = this.$('input[name=city]').val();
+          ship_params.country = this.$('input[name=country]').val().toUpperCase().substring(0, 2);
+          ship_params.state = this.$('input[name=state]').val().toUpperCase();
+          ship_params.zip = this.$('input[name=zip_code]').val();
+          ship_params.email = this.$('input[name=email]').val();
+          ship_params.shipto_name = this.$('input[name=shipto_name]').val() || this.setting('company_name');
+          ship_params.shipto_address = this.$('input[name=shipto_address]').val() || this.setting('business_address');
+          ship_params.shipto_city = this.$('input[name=shipto_city]').val() || this.setting('city');
+          ship_params.shipto_state = this.$('input[name=shipto_state]').val() || this.setting('state').toUpperCase();
+          ship_params.shipto_country = this.$('input[name=shipto_country]').val() || this.setting('country_code').toUpperCase();
+          ship_params.shipto_zip_code = this.$('input[name=shipto_zip_code]').val() || this.setting('zip_code');
+          ship_params.ship_type = this.$('#ship_type').val();
 
-      params.size = this.sizes[this.$('select#package_size').val()];
+      ship_params.psize = this.sizes[this.$('select#package_size').val()];
 
-      for (var key in params) {
-        if (!params[key]) {
+      for (var key in ship_params) {
+        if (!ship_params[key]) {
           services.notify('Please fill in the field for "' + key + '" before continuing.');
           return false;
         }
       }
-      params.intl = params.ship_type === "12";
+      ship_params.intl = ship_params.ship_type === "12";
       //console.log(params);
       this.switchTo('loading');
-      var url = this.productionOn ? this.productionAPI : this.testingAPI;
+      var endpt = this.productionOn ? this.productionAPI : this.testingAPI;
       this.ajax('requestShipping',
         this.renderTemplate('envelope', {
-        params: params
-      }), url);
+        fparams: ship_params
+      }), endpt);
 
     },
     onUserUpdated: function(e) {
@@ -271,6 +270,7 @@
       }
       console.log('user params: ', this.userNewParams);
     },
+    // TODO: dry up these two
     userUpdateConfirm: function() {
       this.ajax('updateUser');
       this.$('#update-confirm').fadeOut();
