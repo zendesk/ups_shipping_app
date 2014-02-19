@@ -92,7 +92,7 @@
       if (this.setting('production_on') === true) {
         this.productionOn = true;
       }
-      
+
       this.requesterId = this.ticket().requester().id();
       this.setUpSizes();
       this.showForm();
@@ -271,16 +271,18 @@
       }
       console.log('user params: ', this.userNewParams);
     },
-    userUpdateConfirm: function() {
+    userUpdateConfirm: function(e) {
       this.ajax('updateUser');
       this.$('#update-confirm').fadeOut();
       this.userNewParams = null;
       this.onFormSubmitted();
+      e.preventDefault();
     },
-    userUpdateDecline: function() {
+    userUpdateDecline: function(e) {
       this.$('.update-confirm').fadeOut();
       this.userNewParams = null;
       this.onFormSubmitted();
+      e.preventDefault();
     },
     fmtd: function(str) {
       return str.toLowerCase().replace(' ', '_');
