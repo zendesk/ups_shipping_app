@@ -16,6 +16,10 @@
            <v12:RequestOption>validate</v12:RequestOption>
         </v12:Request>
         <v11:Shipment>
+           <v11:Description>Return Service for {{setting "company_name"}}</v11:Description>
+           {{#if fparams.intl}}
+           <v11:MILabelCN22Indicator/>
+           {{/if}}
            <v11:Shipper>
               <v11:Name>{{fparams.name}}</v11:Name>
               <v11:ShipperNumber>{{setting "ups_shipper_number"}}</v11:ShipperNumber>
@@ -27,11 +31,11 @@
                  <v11:CountryCode>{{setting "country_code"}}</v11:CountryCode>
               </v11:Address>
               <v11:Phone>
-              <v11:Number>
-              {{setting "phone_number"}}
-            </v11:Number>
-            </v11:Phone>
-            <v11:AttentionName>{{setting "company_name"}}</v11:AttentionName>
+                <v11:Number>
+               {{setting "phone_number"}}
+                </v11:Number>
+              </v11:Phone>
+            <v11:AttentionName>{{setting "attention_name"}}</v11:AttentionName>
            </v11:Shipper>
            <v11:ShipTo>
               <v11:Name>{{fparams.shipto_name}}</v11:Name>
@@ -49,6 +53,7 @@
            </v11:ShipTo>
            <v11:ShipFrom>
               <v11:Name>{{fparams.name}}</v11:Name>
+              <v11:AttentionName>{{setting "attention_name"}}</v11:AttentionName>
               <v11:Address>
                  <v11:AddressLine>{{fparams.address}}</v11:AddressLine>
                  <v11:City>{{fparams.city}}</v11:City>
@@ -64,15 +69,8 @@
                     <v11:AccountNumber>{{setting "ups_shipper_number"}}</v11:AccountNumber>
                 </v11:BillShipper>                 
               </v11:ShipmentCharge>
-              {{#if fparams.intl}}
-              <v11:ShipmentCharge>
-                 <v11:Type>02</v11:Type>
-                 <v11:BillShipper>
-                    <v11:AccountNumber>{{setting "ups_shipper_number"}}</v11:AccountNumber>
-                 </v11:BillShipper>                 
-              </v11:ShipmentCharge>
-              {{/if}}
            </v11:PaymentInformation>
+
 
           <v11:ReturnService>
             <v11:Code>8</v11:Code>
@@ -80,7 +78,6 @@
 
            <v11:Service>
             <v11:Code>{{fparams.ship_type}}</v11:Code> 
-            <v11:c />
           </v11:Service>
            <v11:Package>
               <v11:Description>Return Service for {{setting "company_name"}}</v11:Description>
@@ -134,32 +131,62 @@
           </v11:LabelDelivery>
 
           {{#if fparams.intl}}
-            <v13:InternationalForms>
-              <v13:FormType>05</v13:FormType>
-                <v13:CN22Form>
-                  <v13:LabelSize>4X6</v13:LabelSize>
-                  <v13:PrintsPerPage>1</v13:PrintsPerPage>
-                  <v13:LabelPrintType>gif</v13:LabelPrintType>
-                  <v13:CN22Type>3</v13:CN22Type>
-                  <v13:CN22Content>
-                    <v13:CN22ContentQuantity>1</v13:CN22ContentQuantity>
-                    <v13:CN22ContentDescription>Return product from {{setting "company_name"}} customer back to manufacturer</v13:CN22ContentDescription>
-                    <v13:CN22ContentWeight>
-                      <v13:UnitOfMeasurement>
-                        <v13:Code>LBS</v13:Code>
-                      </v13:UnitOfMeasurement>
-                      <v13:Weight>{{fparams.psize.weight}}</v13:Weight>
-                    </v13:CN22ContentWeight>
-                    <v13:CN22ContentTotalValue>100</v13:CN22ContentTotalValue>
-                    <v13:CN22ContentCurrencyCode>USD</v13:CN22ContentCurrencyCode>
-                    <v13:CN22ContentCountryOfOrigin>US</v13:CN22ContentCountryOfOrigin>
-                  </v13:CN22Content>
-
-                </v13:CN22Form>
-            </v13:InternationalForms>
+          <v11:InternationalForms>
+            <v13:ReasonForExport>RETURN</v13:ReasonForExport>
+            <v13:ExportDate>{{fparams.date}}</v13:ExportDate>
+            <v13:ExportingCarrier>UPS</v13:ExportingCarrier>
+            <v13:Contacts>
+              <v13:SoldTo>
+                <v13:Name>{{fparams.name}}</v13:Name>
+                <v13:AttentionName>{{fparams.name}}</v13:AttentionName>
+                <v13:TaxIdentificationNumber/>
+                <v13:Phone>
+                  <v13:Number>{{setting "phone_number"}}</v13:Number>
+                </v13:Phone>
+                <v13:Address>
+                  <v13:AddressLine>{{fparams.address}}</v13:AddressLine>
+                  <v13:AddressLine/><v13:AddressLine/>
+                  <v13:City>{{fparams.city}}</v13:City>
+                  <v13:StateProvinceCode>{{fparams.state}}</v13:StateProvinceCode>
+                  <v13:PostalCode>{{fparams.zip_code}}</v13:PostalCode>
+                  <v13:CountryCode>{{fparams.country}}</v13:CountryCode>
+                </v13:Address>
+              </v13:SoldTo>
+            </v13:Contacts>
+            <v13:FormType>01</v13:FormType>
+            <v13:Product>
+              <v13:Description>{{fparams.product}}</v13:Description>
+              <v13:Unit>
+                <v13:Number>1</v13:Number>
+                <v13:UnitOfMeasurement>
+                  <v13:Code>PKG</v13:Code>
+                </v13:UnitOfMeasurement>
+                <v13:Value>1</v13:Value>
+              </v13:Unit>
+              <v13:CommodityCode/>
+              <v13:OriginCountryCode>US</v13:OriginCountryCode>
+              <v13:NumberOfPackagesPerCommodity>1</v13:NumberOfPackagesPerCommodity>
+              <v13:ProductWeight>
+                <v13:UnitOfMeasurement>
+                  <v13:Code>Lbs</v13:Code>
+                  <v13:Description>LBS</v13:Description>
+                </v13:UnitOfMeasurement>
+                <v13:Weight>{{fparams.psize.weight}}</v13:Weight>
+              </v13:ProductWeight>
+            </v13:Product>
+            <v13:InvoiceDate>{{fparams.date}}</v13:InvoiceDate>
+            <v13:CurrencyCode>USD</v13:CurrencyCode>
+          </v11:InternationalForms>
           {{/if}}
 
         </v11:ShipmentServiceOptions>
+
+        {{#if fparams.intl}}
+          <InvoiceLineTotal>
+          <MonetaryValue>{{fparams.dollar}}</MonetaryValue>
+          <CurrencyCode>USD</CurrencyCode>
+          </InvoiceLineTotal>
+        {{/if}}
         </v11:Shipment>
 
      </v11:ShipmentRequest>

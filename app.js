@@ -77,6 +77,7 @@
       'app.activated':'onAppActivated',
       'change #package_size': 'onSizeChanged',
       'change .user-info': 'onUserUpdated',
+      'change #ship_type': 'onShipSelected',
       'click button.initialize': 'showForm',
       'click .update-decline': 'userUpdateDecline',
       'click .update-user': 'userUpdateConfirm',
@@ -141,11 +142,7 @@
       var xmlResponse = data.documentElement;
       if ( xmlResponse.getElementsByTagName('TrackingNumber').length > 0 ) {
         var tracking_number = xmlResponse.getElementsByTagName('TrackingNumber')[0].childNodes[0].nodeValue;
-        if ( xmlResponse.getElementsByTagName('PrimaryErrorCode').length > 0 ) {
-          var error = xmlResponse.getElementsByTagName('Description')[0].childNodes[0].nodeValue;
-          services.notify("Shipping error: "+ error + ". Please check your information and try again", "error");
-          console.log("error:", error);
-        } else if ( xmlResponse.getElementsByTagName('GraphicImage').length > 0 ){
+        if ( xmlResponse.getElementsByTagName('GraphicImage').length > 0 ){
             var imageData = xmlResponse.getElementsByTagName('GraphicImage')[0].childNodes[0].nodeValue,
             comment = "![label_image](data:image;base64," + imageData.replace(' ', '') + ") Tracking Number: " + tracking_number;
             if ( this.setting('tracking_field') ) {
@@ -169,7 +166,11 @@
           this.ajax('updateTicketComment', 'See carrier for more details - Tracking Number: ' + lookup);
           services.notify('Your shipment needs additional preparation. TrackingNumber: ', lookup);
         }
-
+      } else if ( xmlResponse.getElementsByTagName('PrimaryErrorCode').length > 0 || xmlResponse.getElementsByTagName('faultstring').length > 0 ) {
+          var error = xmlResponse.getElementsByTagName('Description')[0].childNodes[0].nodeValue;
+          services.notify("Shipping error: "+ error + ". Please check your information and try again", "error");
+          console.log("error:", error);
+          this.switchTo('button');
       }
     },
     onUserFetched: function(data) {
@@ -235,7 +236,13 @@
         }
       }
       ship_params.intl = ship_params.ship_type === "12";
-      //console.log(params);
+      if (this.$('#dollarVal').val().length > 0) {
+        ship_params.dollar = this.$('#dollarVal').val().match(/\d/g).join("");  
+      };
+      if (this.$('input[name=product]').val().length > 0) {
+        ship_params.product = this.$('input[name=product]').val();  
+      };
+      ship_params.date = this.today();
       this.switchTo('loading');
       var endpt = this.productionOn ? this.productionAPI : this.testingAPI;
       this.ajax('requestShipping',
@@ -268,7 +275,14 @@
           self.userNewParams[self.fmtd(self.setting('user_zip_field'))] = newVal;
           break;
       }
-      console.log('user params: ', this.userNewParams);
+      //console.log('user params: ', this.userNewParams);
+    },
+    onShipSelected: function(e) {
+      if (this.$(e.target).val() == "12") {
+        this.$('.valueBox').show();
+      } else {
+        this.$('.valueBox').hide();
+      }
     },
     // TODO: dry up these two
     userUpdateConfirm: function() {
@@ -284,6 +298,11 @@
     },
     fmtd: function(str) {
       return str.toLowerCase().replace(' ', '_');
+    },
+    today: function() {
+      var date = new Date, month = date.getMonth() + 1; 
+      if( month < 10 ){ month = "0" + month;  }; 
+      return "" + date.getFullYear() + month + date.getDate();
     }
   };
 
