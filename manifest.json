@@ -7,6 +7,7 @@
   "defaultLocale": "en",
   "private": true,
   "location": [ "ticket_sidebar" ],
+  "domainWhitelst": [ "https://onlinetools.ups.com", "https://wwwcie.ups.com" ],
   "version": "1.0",
   "frameworkVersion": "1.0",
 
@@ -157,24 +158,28 @@
       "name": "ups_username",
       "type": "text",
       "default": "15",
-      "required": true
+      "required": true,
+      "secure": true
     },
     {
       "name": "ups_password",
       "type": "text",
       "default": "15",
-      "required": true
+      "required": true,
+      "secure": true
     },
     {
       "name": "ups_access_number",
       "type": "text",
       "default": "15",
-      "required": true
+      "required": true,
+      "secure": true
     },
     {
       "name": "ups_shipper_number",
       "type": "text",
-      "required": true
+      "required": true,
+      "secure": true
       },
     {
       "name": "tracking_field",
