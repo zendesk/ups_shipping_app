@@ -17,4 +17,4 @@ Install the app and fill out all of the required fields in the app settings pane
 
 After all settings are filled out, navigate to the a ticket view to see the app, make sure all user information is complete in the sidebar app, select a shipping method and package size, and click the 'Generate label' button.
 
-Currently this app works for domestic returns only.
+This app is intended to handle return shipments being sent back from end-users

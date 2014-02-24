@@ -238,10 +238,10 @@
       ship_params.intl = ship_params.ship_type === "12";
       if (this.$('#dollarVal').val().length > 0) {
         ship_params.dollar = this.$('#dollarVal').val().match(/\d/g).join("");  
-      };
+      }
       if (this.$('input[name=product]').val().length > 0) {
         ship_params.product = this.$('input[name=product]').val();  
-      };
+      }
       ship_params.date = this.today();
       this.switchTo('loading');
       var endpt = this.productionOn ? this.productionAPI : this.testingAPI;
@@ -300,8 +300,8 @@
       return str.toLowerCase().replace(' ', '_');
     },
     today: function() {
-      var date = new Date, month = date.getMonth() + 1; 
-      if( month < 10 ){ month = "0" + month;  }; 
+      var date = new Date(), month = date.getMonth() + 1; 
+      if( month < 10 ){ month = "0" + month;  }
       return "" + date.getFullYear() + month + date.getDate();
     }
   };
