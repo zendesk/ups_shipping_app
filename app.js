@@ -46,7 +46,7 @@
           dataType: 'xml',
           data: envelope,
           contentType: 'text/xml; charset=ansi',
-          secure: true
+          // secure: true
         };
       },
       updateTicketComment: function (comment) {

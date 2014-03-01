@@ -158,28 +158,24 @@
       "name": "ups_username",
       "type": "text",
       "default": "15",
-      "required": true,
-      "secure": true
+      "required": true
     },
     {
       "name": "ups_password",
       "type": "password",
       "default": "15",
-      "required": true,
-      "secure": true
+      "required": true
     },
     {
       "name": "ups_access_number",
       "type": "text",
       "default": "15",
-      "required": true,
-      "secure": true
+      "required": true
     },
     {
       "name": "ups_shipper_number",
       "type": "text",
-      "required": true,
-      "secure": true
+      "required": true
       },
     {
       "name": "tracking_field",
