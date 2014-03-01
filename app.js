@@ -45,7 +45,8 @@
           type: 'POST',
           dataType: 'xml',
           data: envelope,
-          contentType: 'text/xml; charset=ansi'
+          contentType: 'text/xml; charset=ansi',
+          secure: true
         };
       },
       updateTicketComment: function (comment) {
@@ -93,7 +94,7 @@
       if (this.setting('production_on') === true) {
         this.productionOn = true;
       }
-      
+
       this.requesterId = this.ticket().requester().id();
       this.setUpSizes();
       this.showForm();
@@ -237,10 +238,10 @@
       }
       ship_params.intl = ship_params.ship_type === "12";
       if (this.$('#dollarVal').val().length > 0) {
-        ship_params.dollar = this.$('#dollarVal').val().match(/\d/g).join("");  
+        ship_params.dollar = this.$('#dollarVal').val().match(/\d/g).join("");
       }
       if (this.$('input[name=product]').val().length > 0) {
-        ship_params.product = this.$('input[name=product]').val();  
+        ship_params.product = this.$('input[name=product]').val();
       }
       ship_params.date = this.today();
       this.switchTo('loading');
@@ -300,7 +301,7 @@
       return str.toLowerCase().replace(' ', '_');
     },
     today: function() {
-      var date = new Date(), month = date.getMonth() + 1; 
+      var date = new Date(), month = date.getMonth() + 1;
       if( month < 10 ){ month = "0" + month;  }
       return "" + date.getFullYear() + month + date.getDate();
     }
