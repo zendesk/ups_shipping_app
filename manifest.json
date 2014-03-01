@@ -46,7 +46,7 @@
       "type": "text",
       "default": "US",
       "required": true
-    },    
+    },
     {
       "name": "zip_code",
       "type": "number",
@@ -163,7 +163,7 @@
     },
     {
       "name": "ups_password",
-      "type": "text",
+      "type": "password",
       "default": "15",
       "required": true,
       "secure": true

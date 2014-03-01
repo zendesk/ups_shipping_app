@@ -10,7 +10,8 @@ Create shipping labels from the ticket sidebar
 3. AccessLicenseNumber
 4. ShipperNumber
 
-Sign up at https://www.ups.com/one-to-one/register to obtain these.
+Sign up at https://www.ups.com/one-to-one/register to obtain these,
+get your access number at https://www.ups.com/upsdeveloperkit (Just click on 'Request Access Key link')
 
 ***In-Zendesk Setup
 Install the app and fill out all of the required fields in the app settings pane. Leave the "Use UPS Production API?" checkbox unchecked until you have tested your settings successfully. Checking this box will turn on UPS's production API and may result in your account incurring charges for shipping requests made.
