@@ -183,7 +183,7 @@
         this.$('input[name=address]').val(user.user_fields[this.fmtd(this.setting('user_address_field'))]);
         this.$('input[name=city]').val(user.user_fields[this.fmtd(this.setting('user_city_field'))]);
         this.$('input[name=state]').val(user.user_fields[this.fmtd(this.setting('user_state_field'))]);
-        this.$('input[name=country]').val(user.user_fields[this.fmtd(this.setting('user_country_field'))]);
+        this.$('input[name=country]').val(user.user_fields[this.fmtd(this.setting('user_country_field'))].substr(0,2));
         this.$('input[name=zip_code]').val(user.user_fields[this.fmtd(this.setting('user_zip_field'))]);
       }
     },
