@@ -184,7 +184,7 @@
         this.$('input[name=city]').val(user.user_fields[this.fmtd(this.setting('user_city_field'))]);
         this.$('input[name=state]').val(user.user_fields[this.fmtd(this.setting('user_state_field'))]);
         this.$('input[name=country]').val(user.user_fields[this.fmtd(this.setting('user_country_field'))].substr(0,2));
-        this.$('input[name=zip_code]').val(user.user_fields[this.fmtd(this.setting('user_zip_field'))]);
+        this.$('input[name=zip_code]').val(user.user_fields[this.fmtd(this.setting('user_zip_field'))].match(/[a-z0-9]/ig).join(""));
       }
     },
     onSizeChanged: function(event) {
@@ -218,7 +218,7 @@
           ship_params.city = this.$('input[name=city]').val();
           ship_params.country = this.$('input[name=country]').val().toUpperCase().substring(0, 2);
           ship_params.state = this.$('input[name=state]').val().toUpperCase();
-          ship_params.zip = this.$('input[name=zip_code]').val();
+          ship_params.zip = this.$('input[name=zip_code]').val().match(/[a-z0-9]/ig).join("");
           ship_params.email = this.$('input[name=email]').val();
           ship_params.shipto_name = this.$('input[name=shipto_name]').val() || this.setting('company_name');
           ship_params.shipto_address = this.$('input[name=shipto_address]').val() || this.setting('business_address');
