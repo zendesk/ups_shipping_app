@@ -282,7 +282,6 @@
           self.userNewParams[self.fmtd(self.setting('user_zip_field'))] = newVal;
           break;
       }
-      //console.log('user params: ', this.userNewParams);
     },
     onShipSelected: function(e) {
       if (this.$(e.target).val() == "12") {
@@ -303,6 +302,9 @@
       this.userNewParams = null;
       this.onFormSubmitted();
     },
+
+
+  // --------- UTILITY FUNCTIONS --------- //
     fmtd: function(str) {
       return str.toLowerCase().replace(' ', '_');
     },
