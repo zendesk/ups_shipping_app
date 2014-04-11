@@ -157,7 +157,8 @@
           if ( this.setting('tracking_field') ) {
             this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number );
           }
-          this.ajax('updateTicketComment', 'UPS temporary Label URL: ' + labelUrl);
+          var comment = 'UPS temporary Label URL: ' + labelUrl + ' / Tracking Number: ' + tracking_number;
+          this.ajax('updateTicketComment', comment);
           services.notify('Label has been sent to customer and attached to this ticket. Refresh to see updates to this ticket.');
           this.switchTo('button');
 
@@ -235,6 +236,7 @@
           ship_params.ship_type = this.$('#ship_type').val();
 
       ship_params.psize = this.sizes[this.$('select#package_size').val()];
+      ship_params.ticketId = this.ticket().id();
 
       for (var key in ship_params) {
         if (!ship_params[key]) {
