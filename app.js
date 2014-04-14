@@ -1,4 +1,5 @@
 (function() {
+  var f$ = this.jQuery;
   return {
     sizes: {
       'small': {
@@ -138,9 +139,26 @@
       this.$('.update-confirm').fadeIn();
       this.$('.create').fadeOut();
     },
+    getJSONfromSOAPenvelope: function(soap) {
+      var json = null;
+
+      try {
+        json = JSON.parse(this.$(soap).text());
+        // json = this.prettifyJSON(json);
+      } catch(e) { console.log("ee!", e); }
+
+      return json;
+    },
     onRequestShippingDone: function(data) {
-      console.log("-------------->", data);
-      var xmlResponse = data.documentElement;
+      // console.log("kkkkkkkkkkk");
+      // var xml = f$.parseXML(data),
+      // f$xml = f$(xml);
+      // //f$test = f$xml.find('TrackingNumber');
+      // var doc = (new DOMParser()).parseFromString(xml, 'text/xml');
+      // var skip = doc
+      //  var f$test = f$(skip).attr('TrackingNumber');
+      // console.log("--------------------->", skip);
+     var xmlResponse = data.documentElement;
       if ( xmlResponse.getElementsByTagName('TrackingNumber').length > 0 ) {
         var tracking_number = xmlResponse.getElementsByTagName('TrackingNumber')[0].childNodes[0].nodeValue;
         if ( xmlResponse.getElementsByTagName('GraphicImage').length > 0 ){
