@@ -159,10 +159,11 @@
       //  var f$test = f$(skip).attr('TrackingNumber');
       // console.log("--------------------->", skip);
      var xmlResponse = data.documentElement;
+     var comment;
       if ( xmlResponse.getElementsByTagName('TrackingNumber').length > 0 ) {
         var tracking_number = xmlResponse.getElementsByTagName('TrackingNumber')[0].childNodes[0].nodeValue;
         if ( xmlResponse.getElementsByTagName('GraphicImage').length > 0 ){
-            var imageData = xmlResponse.getElementsByTagName('GraphicImage')[0].childNodes[0].nodeValue,
+            var imageData = xmlResponse.getElementsByTagName('GraphicImage')[0].childNodes[0].nodeValue;
             comment = "![label_image](data:image;base64," + imageData.replace(' ', '') + ") Tracking Number: " + tracking_number;
             if ( this.setting('tracking_field') ) {
               this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number );
@@ -175,7 +176,7 @@
           if ( this.setting('tracking_field') ) {
             this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number );
           }
-          var comment = 'UPS temporary Label URL: ' + labelUrl + ' / Tracking Number: ' + tracking_number;
+          comment = 'UPS temporary Label URL: ' + labelUrl + ' / Tracking Number: ' + tracking_number;
           this.ajax('updateTicketComment', comment);
           services.notify('Label has been sent to customer and attached to this ticket. Refresh to see updates to this ticket.');
           this.switchTo('button');
