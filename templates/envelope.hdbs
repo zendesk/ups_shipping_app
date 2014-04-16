@@ -80,7 +80,7 @@
             <v11:Code>{{fparams.ship_type}}</v11:Code> 
           </v11:Service>
            <v11:Package>
-              <v11:Description>Zendesk Ticket # {{fparams.ticketId}}</v11:Description>
+              <v11:Description>RMA # {{fparams.ticketId}}</v11:Description>
               <v11:Packaging>
                  <v11:Code>02</v11:Code>
                  <v11:Description>Package</v11:Description>
