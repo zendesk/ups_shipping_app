@@ -35,7 +35,6 @@
                {{setting "phone_number"}}
                 </v11:Number>
               </v11:Phone>
-            <v11:AttentionName>{{setting "attention_name"}}</v11:AttentionName>
            </v11:Shipper>
            <v11:ShipTo>
               <v11:Name>{{fparams.shipto_name}}</v11:Name>
@@ -53,7 +52,6 @@
            </v11:ShipTo>
            <v11:ShipFrom>
               <v11:Name>{{fparams.name}}</v11:Name>
-              <v11:AttentionName>{{setting "attention_name"}}</v11:AttentionName>
               <v11:Address>
                  <v11:AddressLine>{{fparams.address}}</v11:AddressLine>
                  <v11:City>{{fparams.city}}</v11:City>

@@ -158,6 +158,8 @@
       // var skip = doc
       //  var f$test = f$(skip).attr('TrackingNumber');
       // console.log("--------------------->", skip);
+
+      
      var xmlResponse = data.documentElement;
      var comment;
       if ( xmlResponse.getElementsByTagName('TrackingNumber').length > 0 ) {
@@ -171,7 +173,8 @@
             this.ajax('updateTicketComment', comment);
             services.notify('Label has been sent to customer and attached to this ticket. Refresh to see updates to this ticket.');
             this.switchTo('button');
-        } else if ( xmlResponse.getElementsByTagName('LabelURL').length > 0) {
+         }
+      else if ( xmlResponse.getElementsByTagName('LabelURL').length > 0) {
           var labelUrl = xmlResponse.getElementsByTagName('LabelURL')[0].childNodes[0].nodeValue;
           if ( this.setting('tracking_field') ) {
             this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number );
@@ -187,7 +190,8 @@
           this.ajax('updateTicketComment', 'See carrier for more details - Tracking Number: ' + lookup);
           services.notify('Your shipment needs additional preparation. TrackingNumber: ', lookup);
         }
-      } else if ( xmlResponse.getElementsByTagName('PrimaryErrorCode').length > 0 || xmlResponse.getElementsByTagName('faultstring').length > 0 ) {
+      } 
+      else if ( xmlResponse.getElementsByTagName('PrimaryErrorCode').length > 0 || xmlResponse.getElementsByTagName('faultstring').length > 0 ) {
           var error = xmlResponse.getElementsByTagName('Description')[0].childNodes[0].nodeValue;
           services.notify("Shipping error: "+ error + ". Please check your information and try again", "error");
           console.log("error:", error);
