@@ -1,5 +1,7 @@
 (function() {
-  var f$ = this.jQuery;
+  var f$ = this.jQuery,
+  dp = new DOMParser();
+  var oSerializer = new XMLSerializer();
   return {
     sizes: {
       'small': {
@@ -46,7 +48,7 @@
           type: 'POST',
           dataType: 'xml',
           data: envelope,
-          contentType: 'text/xml; charset=ansi',
+          contentType: 'application/xml',
           // secure: true
         };
       },
@@ -150,14 +152,15 @@
       return json;
     },
     onRequestShippingDone: function(data) {
-      // console.log("kkkkkkkkkkk");
-      // var xml = f$.parseXML(data),
+      console.log("kkkkkkkkkkk");
+      // var xml = f$.parseXML(data.documentElement);
       // f$xml = f$(xml);
-      // //f$test = f$xml.find('TrackingNumber');
-      // var doc = (new DOMParser()).parseFromString(xml, 'text/xml');
-      // var skip = doc
-      //  var f$test = f$(skip).attr('TrackingNumber');
-      // console.log("--------------------->", skip);
+      //f$test = f$xml.find('TrackingNumber');
+      var sXML = oSerializer.serializeToString(data);
+
+      var doc = dp.parseFromString(data.documentElement, 'text/xml');
+       var f$test = f$(doc).find('TrackingNumber').text();
+      console.log("--------------------->", sXML, "data d", data.documentElement);
 
       
      var xmlResponse = data.documentElement;
@@ -274,6 +277,7 @@
       if (this.$('input[name=product]').val().length > 0) {
         ship_params.product = this.$('input[name=product]').val();
       }
+      if (ship_params.state.length > 2) { services.notify("Please use the 2-letter code for State or Province before submitting"); return;};
       ship_params.date = this.today();
       this.switchTo('loading');
       var endpt = this.productionOn ? this.productionAPI : this.testingAPI;
