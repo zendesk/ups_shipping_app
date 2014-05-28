@@ -152,7 +152,7 @@
       return json;
     },
     onRequestShippingDone: function(data) {
-      console.log("kkkkkkkkkkk");
+      // console.log("kkkkkkkkkkk");
       // var xml = f$.parseXML(data.documentElement);
       // f$xml = f$(xml);
       //f$test = f$xml.find('TrackingNumber');
