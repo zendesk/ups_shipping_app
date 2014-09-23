@@ -52,12 +52,14 @@
           // secure: true
         };
       },
-      updateTicketComment: function (comment) {
+      updateTicketComment: function (comment, track) {
+        var field = this.setting('tracking_field');
+        console.log("Tracking number: " + track);
         return {
           url: helpers.fmt('/api/v2/tickets/%@.json', this.ticket().id()),
           type: 'PUT',
           contentType: 'application/json',
-          data: helpers.fmt('{"ticket": {"comment": {"public":false, "body": "%@" }}}', comment )
+          data: helpers.fmt('{"ticket": {"comment": {"public":false, "body": "%@" }, "custom_fields": [{"id": %@,"value":"%@"}] }}', comment, field, track )
         };
       },
       updateUser: function () {
@@ -89,7 +91,6 @@
       'fetchUserFromZendesk.done': 'onUserFetched',
       'requestShipping.done': 'onRequestShippingDone'
     },
-
     onAppActivated: function(app) {
       if (this.setting('editable_form') === true) {
         this.editableForm = true;
@@ -143,57 +144,54 @@
     },
     getJSONfromSOAPenvelope: function(soap) {
       var json = null;
-
       try {
         json = JSON.parse(this.$(soap).text());
         // json = this.prettifyJSON(json);
       } catch(e) { console.log("ee!", e); }
-
       return json;
     },
     onRequestShippingDone: function(data) {
-      // console.log("kkkkkkkkkkk");
-      // var xml = f$.parseXML(data.documentElement);
-      // f$xml = f$(xml);
-      //f$test = f$xml.find('TrackingNumber');
-      // var sXML = oSerializer.serializeToString(data);
-
-      // var doc = dp.parseFromString(data.documentElement, 'text/xml');
-      //  var f$test = f$(doc).find('TrackingNumber').text();
-      // console.log("--------------------->", sXML, "data d", data.documentElement);
-
-      
      var xmlResponse = data.documentElement;
      var comment;
       if ( xmlResponse.getElementsByTagName('TrackingNumber').length > 0 ) {
         var tracking_number = xmlResponse.getElementsByTagName('TrackingNumber')[0].childNodes[0].nodeValue;
-        if ( xmlResponse.getElementsByTagName('GraphicImage').length > 0 ){
+        if ( xmlResponse.getElementsByTagName('GraphicImage').length > 0 ){ // what is this for? IF it has the image
             var imageData = xmlResponse.getElementsByTagName('GraphicImage')[0].childNodes[0].nodeValue;
             comment = "![label_image](data:image;base64," + imageData.replace(' ', '') + ") Tracking Number: " + tracking_number;
             if ( this.setting('tracking_field') ) {
-              this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number );
+              console.log("Log: Tracking field enabled.");
+              // this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number ); //TODO: remove
+              this.ajax('updateTicketComment', comment, tracking_number);
+            } else {
+              this.ajax('updateTicketComment', comment);
             }
-            this.ajax('updateTicketComment', comment);
             services.notify('Label has been sent to customer and attached to this ticket. Refresh to see updates to this ticket.');
             this.switchTo('button');
-         }
-      else if ( xmlResponse.getElementsByTagName('LabelURL').length > 0) {
+
+
+
+        } else if ( xmlResponse.getElementsByTagName('LabelURL').length > 0) { // what is this for? IF it has the label URL
           var labelUrl = xmlResponse.getElementsByTagName('LabelURL')[0].childNodes[0].nodeValue;
-          if ( this.setting('tracking_field') ) {
-            this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number );
-          }
           comment = 'UPS temporary Label URL: ' + labelUrl + ' / Tracking Number: ' + tracking_number;
-          this.ajax('updateTicketComment', comment);
+          if ( this.setting('tracking_field') ) {
+            console.log("Log: Tracking field enabled.");
+            // this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number ); //TODO: remove
+            this.ajax('updateTicketComment', comment, tracking_number);
+          } else {
+            this.ajax('updateTicketComment', comment);
+          }
           services.notify('Label has been sent to customer and attached to this ticket. Refresh to see updates to this ticket.');
           this.switchTo('button');
+
+
 
         } else {
         //if ( xmlResponse.getElementsByTagName('Alert').length > 0 ) {
           var lookup = xmlResponse.getElementsByTagName('TrackingNumber')[0].childNodes[0].nodeValue;
-          this.ajax('updateTicketComment', 'See carrier for more details - Tracking Number: ' + lookup);
+          this.ajax('updateTicketComment', 'See carrier for more details - Tracking Number: ' + lookup, lookup);
           services.notify('Your shipment needs additional preparation. TrackingNumber: ', lookup);
         }
-      } 
+      }
       else if ( xmlResponse.getElementsByTagName('PrimaryErrorCode').length > 0 || xmlResponse.getElementsByTagName('faultstring').length > 0 ) {
           var error = xmlResponse.getElementsByTagName('Description')[0].childNodes[0].nodeValue;
           services.notify("Shipping error: "+ error + ". Please check your information and try again", "error");
@@ -227,7 +225,6 @@
         this.$('input[name="weight"], input[name="height"], input[name="width"], input[name="length"]').val('');
       }
     },
-
     onRequesterChanged: function() {
       if (this.ticket().requester() &&
           this.ticket().requester().id()) {
@@ -235,7 +232,6 @@
         this.ajax('fetchUserFromZendesk');
       }
     },
-
     onFormSubmitted: function(e) {
       if (e) { e.preventDefault(); }
       if (this.userNewParams) {
@@ -285,7 +281,6 @@
         this.renderTemplate('envelope', {
         fparams: ship_params
       }), endpt);
-
     },
     onUserUpdated: function(e) {
        var self = this,
@@ -331,8 +326,6 @@
       this.userNewParams = null;
       this.onFormSubmitted();
     },
-
-
   // --------- UTILITY FUNCTIONS --------- //
     fmtd: function(str) {
       return str.toLowerCase().replace(' ', '_');
