@@ -23,6 +23,7 @@
            <v11:Shipper>
               <v11:Name>{{fparams.name}}</v11:Name>
               <v11:ShipperNumber>{{setting "ups_shipper_number"}}</v11:ShipperNumber>
+              <v11:AttentionName>{{setting "attention_name"}}</v11:AttentionName>
               <v11:Address>
                  <v11:AddressLine>{{setting "business_address"}}</v11:AddressLine>
                  <v11:City>{{setting "city"}}</v11:City>
@@ -52,6 +53,7 @@
            </v11:ShipTo>
            <v11:ShipFrom>
               <v11:Name>{{fparams.name}}</v11:Name>
+              <v11:AttentionName>{{fparams.name}}</v11:AttentionName>
               <v11:Address>
                  <v11:AddressLine>{{fparams.address}}</v11:AddressLine>
                  <v11:City>{{fparams.city}}</v11:City>
