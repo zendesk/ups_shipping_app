@@ -15,7 +15,6 @@
     {
       "name": "company_name",
       "type": "text",
-      "default": "Support",
       "required": true
     },
     {
@@ -26,31 +25,26 @@
     {
       "name": "business_address",
       "type": "text",
-      "default": "989 Market Street",
       "required": true
     },
     {
       "name": "city",
       "type": "text",
-      "default": "San Francisco",
       "required": true
     },
     {
       "name": "state",
       "type": "text",
-      "default": "CA",
       "required": true
     },
     {
       "name": "country_code",
       "type": "text",
-      "default": "US",
       "required": true
     },
     {
       "name": "zip_code",
       "type": "number",
-      "default": "94103",
       "required": true
     },
     {
@@ -87,7 +81,7 @@
     {
       "name": "user_zip_field",
       "type": "text",
-      "default": "Zip Code"
+      "default": "zip code"
     },
     {
       "name": "user_country_field",
@@ -157,19 +151,16 @@
     {
       "name": "ups_username",
       "type": "text",
-      "default": "15",
       "required": true
     },
     {
       "name": "ups_password",
       "type": "password",
-      "default": "15",
       "required": true
     },
     {
       "name": "ups_access_number",
       "type": "text",
-      "default": "15",
       "required": true
     },
     {
@@ -180,7 +171,6 @@
     {
       "name": "tracking_field",
       "type": "number",
-      "default": "21947252"
     },
     {
       "name": "production_on",
