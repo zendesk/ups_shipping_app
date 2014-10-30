@@ -315,16 +315,18 @@
       }
     },
     // TODO: dry up these two
-    userUpdateConfirm: function() {
+    userUpdateConfirm: function(e) {
       this.ajax('updateUser');
       this.$('#update-confirm').fadeOut();
       this.userNewParams = null;
       this.onFormSubmitted();
+      e.preventDefault();
     },
-    userUpdateDecline: function() {
+    userUpdateDecline: function(e) {
       this.$('.update-confirm').fadeOut();
       this.userNewParams = null;
       this.onFormSubmitted();
+      e.preventDefault();
     },
   // --------- UTILITY FUNCTIONS --------- //
     fmtd: function(str) {
