@@ -22,7 +22,7 @@ ul {
   margin-left: 0.6em;
 }
 
-.dimensions {
+.dimensions, .valueBox {
 	display: none;
 }
 .update-confirm {

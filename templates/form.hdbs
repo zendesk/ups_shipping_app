@@ -1,27 +1,27 @@
 <div id="result"></div>
 <form class="form search">
   <h4> Ship From: </h4>
-  <input type="text" placeholder="Customer Name" name="name" class="input-small user-info"/>
-  <input type="text" placeholder="Address" name="address" class="input-small user-info"/>
-  <input type="text" placeholder="City" name="city" class="input-small user-info"/>
-  <input type="text" placeholder="State" name="state" class="input-small user-info" maxlength="2"/>
-  <input type="text" placeholder="Country" name="country" class="input-small user-info" maxlength="2"/>
-  <input type="text" placeholder="Zip Code" name="zip_code" class="input-small user-info"/>
-  <input type="text" placeholder="Email" name="email" class="input-small user-info"/>
+  <input tabindex="1" type="text" placeholder="Customer Name" name="name" class="input-small user-info"/>
+  <input tabindex="2" type="text" placeholder="Address" name="address" class="input-small user-info"/>
+  <input tabindex="3" type="text" placeholder="City" name="city" class="input-small user-info"/>
+  <input tabindex="4" type="text" placeholder="State" name="state" class="input-small user-info" maxlength="2"/>
+  <input tabindex="5" type="text" placeholder="Country" name="country" class="input-small user-info" maxlength="2"/>
+  <input tabindex="6" type="text" placeholder="Zip Code" name="zip_code" class="input-small user-info"/>
+  <input tabindex="7" type="text" placeholder="Email" name="email" class="input-small user-info"/>
   <br/><br/>
   {{#if hide}}
   <h4> Ship To: </h4>
-  <input type="text" placeholder="Name" name="shipto_name" class="input-small"/>
-  <input type="text" placeholder="Address" name="shipto_address" class="input-small"/>
-  <input type="text" placeholder="City" name="shipto_city" class="input-small"/>
-  <input type="text" placeholder="State" name="shipto_state" class="input-small" maxlength="2"/>
-  <input type="text" placeholder="Country" name="shipto_country" class="input-small" maxlength="2"/>
-  <input type="text" placeholder="Zip Code" name="shipto_zip_code" class="input-small"/>
+  <input tabindex="8" type="text" placeholder="Name" name="shipto_name" class="input-small"/>
+  <input tabindex="9" type="text" placeholder="Address" name="shipto_address" class="input-small"/>
+  <input tabindex="10" type="text" placeholder="City" name="shipto_city" class="input-small"/>
+  <input tabindex="11" type="text" placeholder="State" name="shipto_state" class="input-small" maxlength="2"/>
+  <input tabindex="12" type="text" placeholder="Country" name="shipto_country" class="input-small" maxlength="2"/>
+  <input tabindex="13" type="text" placeholder="Zip Code" name="shipto_zip_code" class="input-small"/>
   <br/><br/>
   {{/if}}
   <h4>Package Information: </h4>
   <label>Size</label>
-  <select id="package_size">
+  <select tabindex="13" id="package_size">
   	<option value="small">Small</option>
   	<option value="medium">Medium</option>
   	<option value="large">Large</option>
@@ -35,22 +35,27 @@
   </div>
   <br/>
   <label>Shipping Type</label>
-  <select id="ship_type">
+  <select tabindex="14" id="ship_type">
     <option value="03">Ground</option>
     <option value="01">One-Day Air</option>
     <option value="02">Two-Day Air</option>
-<!--     <option value="11">UPS Standard</option>
- --><!--     <option value="12">3-Day Intern'tl</option>
- -->  </select>
-  <br/><br/>
-
+<!--     <option value="11">UPS Standard</option> -->
+    <option value="12">3-Day Intern'tl</option>
+   </select>
+   <br/><br/>
+   <div class="valueBox">
+    <h4>Approximate Value of Goods*</h4>
+    <p>In USD, (e.g. 100 => $1.00)</p>
+    <input tabindex="15" type="text" id="dollarVal"/>
+    <label>Product Name*</label>
+    <input type="text" tabindex="16" name="product"/>
+    <br/><br/>
+  </div>
+  <a tabindex="17" class="btn create">Generate Shipping Label</a>
+</form>
 <div class="update-confirm">
     <h3>Update User?</h3>
     <p>Would you like to save this new information to the User's profile?</p>
-    <button class="btn update-decline">Nope</button>
-    <button class="btn btn-primary update-user">Yes</button>
+    <a class="btn update-decline">Nope</a>
+    <a class="btn btn-primary update-user">Yes</a>
 </div>
-
-  
-  <button type="submit" class="btn create">Generate Shipping Label</button>
-</form>

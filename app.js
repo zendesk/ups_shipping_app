@@ -1,4 +1,7 @@
 (function() {
+  var f$ = this.jQuery;
+  // dp = new DOMParser();
+  // var oSerializer = new XMLSerializer();
   return {
     sizes: {
       'small': {
@@ -45,15 +48,18 @@
           type: 'POST',
           dataType: 'xml',
           data: envelope,
-          contentType: 'text/xml; charset=ansi'
+          contentType: 'application/xml',
+          // secure: true
         };
       },
-      updateTicketComment: function (comment) {
+      updateTicketComment: function (comment, track) {
+        var field = this.setting('tracking_field');
+        console.log("Tracking number: " + track);
         return {
           url: helpers.fmt('/api/v2/tickets/%@.json', this.ticket().id()),
           type: 'PUT',
           contentType: 'application/json',
-          data: helpers.fmt('{"ticket": {"comment": {"public":false, "body": "%@" }}}', comment )
+          data: helpers.fmt('{"ticket": {"comment": {"public":false, "body": "%@" }, "custom_fields": [{"id": %@,"value":"%@"}] }}', comment, field, track )
         };
       },
       updateUser: function () {
@@ -77,14 +83,14 @@
       'app.activated':'onAppActivated',
       'change #package_size': 'onSizeChanged',
       'change .user-info': 'onUserUpdated',
+      'change #ship_type': 'onShipSelected',
       'click button.initialize': 'showForm',
       'click .update-decline': 'userUpdateDecline',
       'click .update-user': 'userUpdateConfirm',
-      'click button.create': 'onFormSubmitted',
+      'click a.create': 'onFormSubmitted',
       'fetchUserFromZendesk.done': 'onUserFetched',
       'requestShipping.done': 'onRequestShippingDone'
     },
-
     onAppActivated: function(app) {
       if (this.setting('editable_form') === true) {
         this.editableForm = true;
@@ -136,41 +142,61 @@
       this.$('.update-confirm').fadeIn();
       this.$('.create').fadeOut();
     },
+    getJSONfromSOAPenvelope: function(soap) {
+      var json = null;
+      try {
+        json = JSON.parse(this.$(soap).text());
+        // json = this.prettifyJSON(json);
+      } catch(e) { console.log("ee!", e); }
+      return json;
+    },
     onRequestShippingDone: function(data) {
-      console.log("-------------->", data);
-      var xmlResponse = data.documentElement;
+     var xmlResponse = data.documentElement;
+     var comment;
       if ( xmlResponse.getElementsByTagName('TrackingNumber').length > 0 ) {
         var tracking_number = xmlResponse.getElementsByTagName('TrackingNumber')[0].childNodes[0].nodeValue;
-        if ( xmlResponse.getElementsByTagName('PrimaryErrorCode').length > 0 ) {
-          var error = xmlResponse.getElementsByTagName('Description')[0].childNodes[0].nodeValue;
-          services.notify("Shipping error: "+ error + ". Please check your information and try again", "error");
-          console.log("error:", error);
-        } else if ( xmlResponse.getElementsByTagName('GraphicImage').length > 0 ){
-            var imageData = xmlResponse.getElementsByTagName('GraphicImage')[0].childNodes[0].nodeValue,
+        if ( xmlResponse.getElementsByTagName('GraphicImage').length > 0 ){ // what is this for? IF it has the image
+            var imageData = xmlResponse.getElementsByTagName('GraphicImage')[0].childNodes[0].nodeValue;
             comment = "![label_image](data:image;base64," + imageData.replace(' ', '') + ") Tracking Number: " + tracking_number;
             if ( this.setting('tracking_field') ) {
-              this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number );
+              console.log("Log: Tracking field enabled.");
+              // this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number ); //TODO: remove
+              this.ajax('updateTicketComment', comment, tracking_number);
+            } else {
+              this.ajax('updateTicketComment', comment);
             }
-            //this.ajax('updateTicketComment', comment);
             services.notify('Label has been sent to customer and attached to this ticket. Refresh to see updates to this ticket.');
             this.switchTo('button');
-        } else if ( xmlResponse.getElementsByTagName('LabelURL').length > 0) {
+
+
+
+        } else if ( xmlResponse.getElementsByTagName('LabelURL').length > 0) { // what is this for? IF it has the label URL
           var labelUrl = xmlResponse.getElementsByTagName('LabelURL')[0].childNodes[0].nodeValue;
-              // receiptUrl = xmlResponse.getElementsByTagName('ReceiptURL')[0].childNodes[0].nodeValue;
+          comment = 'UPS temporary Label URL: ' + labelUrl + ' / Tracking Number: ' + tracking_number;
           if ( this.setting('tracking_field') ) {
-            this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number );
+            console.log("Log: Tracking field enabled.");
+            // this.ticket().customField("custom_field_" + this.setting('tracking_field'), tracking_number ); //TODO: remove
+            this.ajax('updateTicketComment', comment, tracking_number);
+          } else {
+            this.ajax('updateTicketComment', comment);
           }
-          this.ajax('updateTicketComment', 'UPS temporary Label URL: ' + labelUrl);
           services.notify('Label has been sent to customer and attached to this ticket. Refresh to see updates to this ticket.');
           this.switchTo('button');
+
+
 
         } else {
         //if ( xmlResponse.getElementsByTagName('Alert').length > 0 ) {
           var lookup = xmlResponse.getElementsByTagName('TrackingNumber')[0].childNodes[0].nodeValue;
-          this.ajax('updateTicketComment', 'See carrier for more details - Tracking Number: ' + lookup);
+          this.ajax('updateTicketComment', 'See carrier for more details - Tracking Number: ' + lookup, lookup);
           services.notify('Your shipment needs additional preparation. TrackingNumber: ', lookup);
         }
-
+      }
+      else if ( xmlResponse.getElementsByTagName('PrimaryErrorCode').length > 0 || xmlResponse.getElementsByTagName('faultstring').length > 0 ) {
+          var error = xmlResponse.getElementsByTagName('Description')[0].childNodes[0].nodeValue;
+          services.notify("Shipping error: "+ error + ". Please check your information and try again", "error");
+          console.log("error:", error);
+          this.switchTo('button');
       }
     },
     onUserFetched: function(data) {
@@ -182,8 +208,12 @@
         this.$('input[name=address]').val(user.user_fields[this.fmtd(this.setting('user_address_field'))]);
         this.$('input[name=city]').val(user.user_fields[this.fmtd(this.setting('user_city_field'))]);
         this.$('input[name=state]').val(user.user_fields[this.fmtd(this.setting('user_state_field'))]);
-        this.$('input[name=country]').val(user.user_fields[this.fmtd(this.setting('user_country_field'))]);
-        this.$('input[name=zip_code]').val(user.user_fields[this.fmtd(this.setting('user_zip_field'))]);
+        if( user.user_fields[this.fmtd(this.setting('user_country_field'))] ) {
+          this.$('input[name=country]').val(user.user_fields[this.fmtd(this.setting('user_country_field'))].substr(0,2));
+        }
+        if ( user.user_fields[this.fmtd(this.setting('user_zip_field'))] ) {
+          this.$('input[name=zip_code]').val(user.user_fields[this.fmtd(this.setting('user_zip_field'))].match(/[a-z0-9]/ig).join(""));
+        }
       }
     },
     onSizeChanged: function(event) {
@@ -195,7 +225,6 @@
         this.$('input[name="weight"], input[name="height"], input[name="width"], input[name="length"]').val('');
       }
     },
-
     onRequesterChanged: function() {
       if (this.ticket().requester() &&
           this.ticket().requester().id()) {
@@ -203,7 +232,6 @@
         this.ajax('fetchUserFromZendesk');
       }
     },
-
     onFormSubmitted: function(e) {
       if (e) { e.preventDefault(); }
       if (this.userNewParams) {
@@ -211,39 +239,48 @@
         this.confirmed = false;
         return false;
       }
-      var params = {};
-          params.name = this.$('input[name=name]').val();
-          params.address = this.$('input[name=address]').val();
-          params.city = this.$('input[name=city]').val();
-          params.country = this.$('input[name=country]').val().toUpperCase().substring(0, 2);
-          params.state = this.$('input[name=state]').val().toUpperCase();
-          params.zip = this.$('input[name=zip_code]').val();
-          params.email = this.$('input[name=email]').val();
-          params.shipto_name = this.$('input[name=shipto_name]').val() || this.setting('company_name');
-          params.shipto_address = this.$('input[name=shipto_address]').val() || this.setting('business_address');
-          params.shipto_city = this.$('input[name=shipto_city]').val() || this.setting('city');
-          params.shipto_state = this.$('input[name=shipto_state]').val() || this.setting('state').toUpperCase();
-          params.shipto_country = this.$('input[name=shipto_country]').val() || this.setting('country_code').toUpperCase();
-          params.shipto_zip_code = this.$('input[name=shipto_zip_code]').val() || this.setting('zip_code');
-          params.ship_type = this.$('#ship_type').val();
+      var ship_params = {};
+          ship_params.name = this.$('input[name=name]').val();
+          ship_params.address = this.$('input[name=address]').val();
+          ship_params.city = this.$('input[name=city]').val();
+          ship_params.country = this.$('input[name=country]').val().toUpperCase().substring(0, 2);
+          ship_params.state = this.$('input[name=state]').val().toUpperCase();
+          if ( this.$('input[name=zip_code]').val().length > 0 ){
+            ship_params.zip = this.$('input[name=zip_code]').val().match(/[a-z0-9]/ig).join("");
+          }
+          ship_params.email = this.$('input[name=email]').val();
+          ship_params.shipto_name = this.$('input[name=shipto_name]').val() || this.setting('company_name');
+          ship_params.shipto_address = this.$('input[name=shipto_address]').val() || this.setting('business_address');
+          ship_params.shipto_city = this.$('input[name=shipto_city]').val() || this.setting('city');
+          ship_params.shipto_state = this.$('input[name=shipto_state]').val() || this.setting('state').toUpperCase();
+          ship_params.shipto_country = this.$('input[name=shipto_country]').val() || this.setting('country_code').toUpperCase();
+          ship_params.shipto_zip_code = this.$('input[name=shipto_zip_code]').val() || this.setting('zip_code');
+          ship_params.ship_type = this.$('#ship_type').val();
 
-      params.size = this.sizes[this.$('select#package_size').val()];
+      ship_params.psize = this.sizes[this.$('select#package_size').val()];
+      ship_params.ticketId = this.ticket().id();
 
-      for (var key in params) {
-        if (!params[key]) {
+      for (var key in ship_params) {
+        if (!ship_params[key]) {
           services.notify('Please fill in the field for "' + key + '" before continuing.');
           return false;
         }
       }
-      params.intl = params.ship_type === "12";
-      //console.log(params);
+      ship_params.intl = ship_params.ship_type === "12";
+      if (this.$('#dollarVal').val().length > 0) {
+        ship_params.dollar = this.$('#dollarVal').val().match(/\d/g).join("");
+      }
+      if (this.$('input[name=product]').val().length > 0) {
+        ship_params.product = this.$('input[name=product]').val();
+      }
+      if (ship_params.state.length > 2) { services.notify("Please use the 2-letter code for State or Province before submitting"); return;}
+      ship_params.date = this.today();
       this.switchTo('loading');
-      var url = this.productionOn ? this.productionAPI : this.testingAPI;
+      var endpt = this.productionOn ? this.productionAPI : this.testingAPI;
       this.ajax('requestShipping',
         this.renderTemplate('envelope', {
-        params: params
-      }), url);
-
+        fparams: ship_params
+      }), endpt);
     },
     onUserUpdated: function(e) {
        var self = this,
@@ -269,8 +306,15 @@
           self.userNewParams[self.fmtd(self.setting('user_zip_field'))] = newVal;
           break;
       }
-      console.log('user params: ', this.userNewParams);
     },
+    onShipSelected: function(e) {
+      if (this.$(e.target).val() == "12") {
+        this.$('.valueBox').show();
+      } else {
+        this.$('.valueBox').hide();
+      }
+    },
+    // TODO: dry up these two
     userUpdateConfirm: function(e) {
       this.ajax('updateUser');
       this.$('#update-confirm').fadeOut();
@@ -284,8 +328,14 @@
       this.onFormSubmitted();
       e.preventDefault();
     },
+  // --------- UTILITY FUNCTIONS --------- //
     fmtd: function(str) {
       return str.toLowerCase().replace(' ', '_');
+    },
+    today: function() {
+      var date = new Date(), month = date.getMonth() + 1;
+      if( month < 10 ){ month = "0" + month;  }
+      return "" + date.getFullYear() + month + date.getDate();
     }
   };
 
