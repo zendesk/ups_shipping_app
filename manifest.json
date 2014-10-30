@@ -167,10 +167,10 @@
       "name": "ups_shipper_number",
       "type": "text",
       "required": true
-      },
+    },
     {
       "name": "tracking_field",
-      "type": "number",
+      "type": "number"
     },
     {
       "name": "production_on",
