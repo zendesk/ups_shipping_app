@@ -1,5 +1,8 @@
-ups_shipping_app
-==============
+⚠️ Use of this software is subject to important terms and conditions as set forth in the License file ⚠️
+
+# UPS Shipping App
+
+## Description:
 
 Create shipping labels from the ticket sidebar
 
@@ -49,3 +52,6 @@ App will automatically pull customer's address from custom user-fields (or they 
  - Click "Upload"
  - Fill in information
  - Keep "Use UPS Production API?" unchecked until you're ready to make real shipment requests since charges may occur.
+
+## Screenshot(s):
+![screenshot-1](http://cl.ly/2H2R451q1X3d/Image%202016-06-06%20at%2011.14.10%20AM.png)
