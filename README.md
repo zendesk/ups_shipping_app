@@ -54,4 +54,4 @@ App will automatically pull customer's address from custom user-fields (or they 
  - Keep "Use UPS Production API?" unchecked until you're ready to make real shipment requests since charges may occur.
 
 ## Screenshot(s):
-![screenshot-1](http://cl.ly/2H2R451q1X3d/Image%202016-06-06%20at%2011.14.10%20AM.png)
+![screenshot-1](http://cl.ly/3J0W141b1v2s/Image%202016-06-06%20at%2011.18.00%20AM.png)
